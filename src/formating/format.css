@@ -1,0 +1,9 @@
+.lbutton{
+    border-radius: 12px;
+    outline: none;
+    background-color: white;
+}
+.lbutton:hover{
+    background-color: black;
+    color: white;
+}

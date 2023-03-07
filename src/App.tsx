@@ -1,10 +1,22 @@
-import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import { Home } from "./pages/Home";
+import { Help } from "./pages/Help";
+import { User } from "./pages/User";
+import { Navbar } from "./components/Navbar";
 
 function App() {
   return (
-    <div className="App">
-    </div>
+    <>
+      <Navbar />
+      <Container className="mb-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/store" element={<User />} />
+          <Route path="/about" element={<Help />} />
+        </Routes>
+      </Container>
+    </>
   );
 }
 
