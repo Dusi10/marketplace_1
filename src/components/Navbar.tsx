@@ -1,10 +1,11 @@
-import { Button, Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
+import { Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import "../formating/format.css"
+import "../formating/format.css";
+import { Login } from "../components/login";
 
-export function Navbar() {
+export const Navbar = () => {
   return (
-    <NavbarBs sticky="top" className="bg-white shadow-sm mb-3">
+    <NavbarBs sticky="top" className="bg-white shadow-sm mb-1">
       <Container>
         <Nav className="me-auto">
           <Nav.Link to="/" as={NavLink}>
@@ -16,12 +17,9 @@ export function Navbar() {
           <Nav.Link to="/Help" as={NavLink}>
             Help
           </Nav.Link>
-
         </Nav>
-        <button className="lbutton">
-          Login
-        </button>
+        <Login />
       </Container>
     </NavbarBs>
   );
-}
+};
