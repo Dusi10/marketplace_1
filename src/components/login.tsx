@@ -24,11 +24,11 @@ export const Login = () => {
       {user ? (
         <div className="user-info">
           <span>{user.displayName}</span>
-          <Button onClick={signUserOut}>Logout</Button>
+          <Button onClick={signUserOut} variant="outline-primary" >Logout</Button>
         </div>
       ) : (
         <div>
-          <Button onClick={signInWithGoogle}>Login</Button>
+          <Button onClick={signInWithGoogle} variant="outline-primary">Login</Button>
         </div>
       )}
     </div>

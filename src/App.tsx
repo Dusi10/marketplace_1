@@ -31,6 +31,7 @@ function App() {
           <Route path="/Rent" element={<Rent />} />
         </Routes>
       </Container>
+      
     </>
   );
 }
