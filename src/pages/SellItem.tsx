@@ -6,7 +6,13 @@ import { Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+} from "firebase/firestore";
 
 const uploadImage = (
   imageUpload: File | null,
@@ -22,6 +28,8 @@ const uploadImage = (
 };
 
 export const SellItem = () => {
+  //Image name
+  const [fileName, setFileName] = useState("No file selected");
   // Image Upload
   const [user] = useAuthState(auth);
   const [imageUpload, setImageUpload] = useState<File | null>(null);
@@ -50,26 +58,25 @@ export const SellItem = () => {
       );
     });
   }, []);
-  
+
   //data effect
-  useEffect(()=>{ 
+  useEffect(() => {
     const getItemList = async () => {
-    //Read the data
-    //See the item list
-    try {
-      const data = await getDocs(itemsCollectionRef);
-      const filteredItems = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setItemList(filteredItems);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+      //Read the data
+      //See the item list
+      try {
+        const data = await getDocs(itemsCollectionRef);
+        const filteredItems = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setItemList(filteredItems);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     getItemList();
-  }, [])
-;
+  }, []);
   //Data Upload
   const onSubmitData = async () => {
     try {
@@ -77,19 +84,30 @@ export const SellItem = () => {
         title: newItemTitle,
         price: newItemPrice,
         description: newItemDescription,
-        images: imageList
+        images: imageList,
       });
-      setShow(true)
+      setShow(true);
     } catch (err) {
       console.error(err);
     }
   };
+
   const handleUpload = () => {
     uploadImage(imageUpload, setImageList);
     onSubmitData();
     setShow(true);
   };
 
+  const handleFileInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    setImageUpload(file);
+    const fileLabel = document.querySelector("#fileLabel");
+    if (fileLabel && file) {
+      fileLabel.textContent = file.name;
+    }
+  };
 
   return (
     <>
@@ -102,36 +120,39 @@ export const SellItem = () => {
         <p className="user-name mb-3">{user?.displayName}</p>
         <div className="listing_data mb-4">
           <input
+            id="fileInput"
             className="mb-4"
             type="file"
-            onChange={(event) => {
-              setImageUpload(event.target.files ? event.target.files[0] : null);
-            }}
+            onChange={handleFileInputChange}
           />
+          <label htmlFor="fileInput" id="fileLabel">Choose a Photo</label>
           <div className="mb-4">
             <input
               type={"string"}
+              className="input-title"
               placeholder="Title"
               onChange={(e) => setNewItemTitle(e.target.value)}
-            ></input>
+            />
           </div>
           <div className="mb-4">
             <input
               type={"number"}
-              placeholder="price"
+              className="input-price"
+              placeholder="Price"
               onChange={(e) => setNewItemPrice(e.target.value)}
-            ></input>
+            />
           </div>
-          <div className="mb-4 ">
+          <div className="mb-4">
             <textarea
+              className="input-description"
               placeholder="Description"
               onChange={(e) => setNewItemDescription(e.target.value)}
-            ></textarea>
+            />
           </div>
           <Button onClick={handleUpload} variant="outline-primary">
             Upload
           </Button>
-          
+
           <Modal show={show} onHide={() => setShow(false)}>
             <Modal.Header closeButton>
               <Modal.Title>Upload complete!</Modal.Title>

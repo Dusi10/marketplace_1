@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import "../formating/pictures.css";
 import { Card, Container } from "react-bootstrap";
+import { Help } from "../pages/Help";
 
 const Arrow = styled.div<{ direction: "left" | "right" }>`
   width: 50px;
@@ -77,13 +78,7 @@ const Slider = () => {
         </Arrow>
         <Wrapper>
           <Slide>
-            <ImgContainer>
-              <Image src="src\pictures\generic book open.jpg" />
-            </ImgContainer>
-            <InfoContainer>
-                <p>Könyv</p>
-                <Price>10</Price>
-            </InfoContainer>
+            <Help/>
           </Slide>
           
         </Wrapper>
