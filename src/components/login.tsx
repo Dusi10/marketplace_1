@@ -6,6 +6,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import "../formating/user.css";
 import { signOut } from "firebase/auth";
 
+// Logic for Google authenticator
 export const Login = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();

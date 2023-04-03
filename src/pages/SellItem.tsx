@@ -21,7 +21,7 @@ const uploadImage = (
   });
 };
 
-export const User = () => {
+export const SellItem = () => {
   // Image Upload
   const [user] = useAuthState(auth);
   const [imageUpload, setImageUpload] = useState<File | null>(null);

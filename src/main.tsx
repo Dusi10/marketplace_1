@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
+    {/*the whole App is wrapped in BrowserRouter so we dont need to add it every time*/}
     <BrowserRouter>
       <App />
     </BrowserRouter>

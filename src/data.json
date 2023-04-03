@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "img": "/imgs/book.jpg",
+        "title": "Hat",
+        "desc": "My favourite hat",
+        "price": 100
+    },
+    {
+        "id": 2,
+        "img": "/imgs/book.jpg",
+        "title": "Hat",
+        "desc": "My favourite hat",
+        "price": 100
+    },
+    {
+        "id": 3,
+        "img": "/imgs/book.jpg",
+        "title": "Hat",
+        "desc": "My favourite hat",
+        "price": 100
+    },
+    {
+        "id": 4,
+        "img": "/imgs/book.jpg",
+        "title": "Hat",
+        "desc": "My favourite hat",
+        "price": 100
+    },
+    {
+        "id": 5,
+        "img": "/imgs/book.jpg",
+        "title": "Hat",
+        "desc": "My favourite hat",
+        "price": 100
+    }
+]

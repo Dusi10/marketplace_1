@@ -14,6 +14,9 @@ import { FastNavbar } from "./components/FastNavbar";
 import { Clothes } from "./pages/Clothes";
 import { Books } from "./pages/Books";
 import { Rent } from "./pages/Rent";
+import { Listings } from "./pages/Listings";
+import Footer from "./components/Footer";
+import { SellItem } from "./pages/SellItem";
 
 function App() {
   return (
@@ -29,8 +32,14 @@ function App() {
           <Route path="/Clothes" element={<Clothes />} />
           <Route path="/Books" element={<Books />} />
           <Route path="/Rent" element={<Rent />} />
+          <Route path="/Listings" element={<Listings />} />
+          <Route path="Sellitem" element={<SellItem/>}/>
         </Routes>
+        
+        
       </Container>
+      <Footer/>
+      
       
     </>
   );

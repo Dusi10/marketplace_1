@@ -2,11 +2,14 @@ import { Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import "../formating/format.css";
 import "../formating/user.css";
-import { Cart } from "./Cart";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../config/firebase";
 
+//Second row navbar for more pages
 export const FastNavbar = () => {
+  const [user] = useAuthState(auth);
   return (
-    <NavbarBs sticky="top" className="bg-white shadow-sm mb-3">
+    <NavbarBs  className="bg-white shadow-sm mb-4">
       <Container>
         <Nav className="me-auto">
           <Nav.Link to="/clothes" as={NavLink}>
@@ -19,14 +22,17 @@ export const FastNavbar = () => {
             Rent
           </Nav.Link>
         </Nav>
-        <div className="user-info">
-          <span>
-            <Nav.Link to="/User" as={NavLink}>
-              Sell Items
-            </Nav.Link>
-          </span>
-          <Cart />
-        </div>
+        {user ? (
+          <div className="user-info">
+            <span>
+              <Nav.Link to="/Sellitem" as={NavLink}>
+                Sell Items
+              </Nav.Link>
+            </span>
+          </div>
+        ) : (
+          ""
+        )}
       </Container>
     </NavbarBs>
   );
