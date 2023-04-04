@@ -20,30 +20,29 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-
-
 export const SellItem = () => {
-  //User auth
+  //User auth for authentication purpoise
   const [user] = useAuthState(auth);
-  // Image Upload
 
-  // Data Upload
+  // these states are representing the datas which uploading to the firebase
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemPrice, setNewItemPrice] = useState("number");
   const [newItemDescription, setNewItemDescription] = useState("");
-
+  //firebase database
   const itemsCollectionRef = collection(db, "Item");
-  //Pop up
+  //Pop up after the post has been made
   const [show, setShow] = useState(false);
 
-  //useeffect
+  //for keeping track of the items that are beeing uploaded to the firebase database also I added all of the target values as properties for this state (the values whicha re given to this state are stored in the firebase)
   const [itemList, setItemList] = useState<any>([]);
 
-  // New Image upload method
+  // New Image upload method, the file representing the current chosen file and the new files url is stored in the newFile state so it can be easily used
 
   const [file, setFile] = useState<any>("");
-  const [newFile, setNewFile] = useState([])
+  const [newFile, setNewFile] = useState([]);
 
+  // Image useeffect, this one gives a new name for the file case if there are multiple files with the same name it will refresh the picture to the newest one so I added a date and time which refreshes before the files name so there wont be two same file names.
+  //I also keep track of the files uploading state so later on I can make adjustmants to disable the submit button in case the file hasnt been uploaded yet
   useEffect(() => {
     const uploadFile = () => {
       const name = new Date().getTime() + file.name;
@@ -63,12 +62,12 @@ export const SellItem = () => {
             case "running":
               console.log("Upload is running");
               break;
-              default:
-              break
+            default:
+              break;
           }
         },
         (error) => {
-          console.log(error)
+          console.log(error);
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -77,15 +76,13 @@ export const SellItem = () => {
         }
       );
     };
-    file && uploadFile()
-  },[file]);
+    file && uploadFile();
+  }, [file]);
 
-
-  //data effect
+  //data useEffect
   useEffect(() => {
     const getItemList = async () => {
-      //Read the data
-      //See the item list
+      //maps the datas to the docs and sets the itemlist with the new value
       try {
         const data = await getDocs(itemsCollectionRef);
         const filteredItems = data.docs.map((doc) => ({
@@ -99,7 +96,8 @@ export const SellItem = () => {
     };
     getItemList();
   }, []);
-  //Data Upload
+
+  //When the button is pressed the values are set with the fields current value and uploades it to the firebase database and also the setShow is getting a truthy value case in case it gets a truthy value it shows up and after it we can close it, it's just a nice way to show that the upload is done
   const onSubmitData = async () => {
     try {
       await addDoc(itemsCollectionRef, {
@@ -114,12 +112,21 @@ export const SellItem = () => {
       console.error(err);
     }
   };
-  const handleUpload = () => {
-    // uploadImage(imageUpload, setImageList);
-    onSubmitData();
-    setShow(true);
+  //Resets the fields value after pushing it
+  const resetFields = () => {
+    setNewItemDescription("");
+    setNewItemPrice("");
+    setNewItemTitle("");
   };
 
+  //When we have multiple functions which we want to trigger when pressing the button we need to make a new function which triggers the functions
+  const handleUpload = () => {
+    onSubmitData();
+    setShow(true);
+    resetFields();
+  };
+
+  //We want to display the chosen files name so I added a fileLabel to the on change event but we also want to set the current files value with the chosen file so we need to make a function which can trigger both function at the same time when the onChange event triggers.
   const handleFileInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -140,7 +147,7 @@ export const SellItem = () => {
           alt="User profile"
         />
         <p className="user-name mb-3">{user?.displayName}</p>
-        <div className="listing_data mb-4">
+        <div className="listing_data mb-3">
           <input
             id="fileInput"
             className="mb-4"
@@ -156,6 +163,7 @@ export const SellItem = () => {
               className="input-title"
               placeholder="Title"
               onChange={(e) => setNewItemTitle(e.target.value)}
+              value={newItemTitle}
             />
           </div>
           <div className="mb-4">
@@ -164,6 +172,7 @@ export const SellItem = () => {
               className="input-price"
               placeholder="Price"
               onChange={(e) => setNewItemPrice(e.target.value)}
+              value={newItemPrice}
             />
           </div>
           <div className="mb-4">
@@ -171,12 +180,13 @@ export const SellItem = () => {
               className="input-description"
               placeholder="Description"
               onChange={(e) => setNewItemDescription(e.target.value)}
+              value={newItemDescription}
             />
           </div>
           <Button onClick={handleUpload} variant="outline-primary">
             Upload
           </Button>
-
+          {/*Pop up for when the upload is complete*/}
           <Modal show={show} onHide={() => setShow(false)}>
             <Modal.Header closeButton>
               <Modal.Title>Upload complete!</Modal.Title>
