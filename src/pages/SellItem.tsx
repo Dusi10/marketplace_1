@@ -4,7 +4,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import "../formating/user.css";
 import { Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
+import {
+  ref,
+  uploadBytes,
+  listAll,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { v4 } from "uuid";
 import {
   addDoc,
@@ -14,26 +20,13 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-const uploadImage = (
-  imageUpload: File | null,
-  setImageList: React.Dispatch<React.SetStateAction<string[]>>
-) => {
-  if (imageUpload == null) return;
-  const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-  uploadBytes(imageRef, imageUpload).then((snapshot) => {
-    getDownloadURL(snapshot.ref).then((url) => {
-      setImageList((prev) => [...prev, url]);
-    });
-  });
-};
+
 
 export const SellItem = () => {
-  //Image name
-  const [fileName, setFileName] = useState("No file selected");
-  // Image Upload
+  //User auth
   const [user] = useAuthState(auth);
-  const [imageUpload, setImageUpload] = useState<File | null>(null);
-  const [imageList, setImageList] = useState<string[]>([]);
+  // Image Upload
+
   // Data Upload
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemPrice, setNewItemPrice] = useState("number");
@@ -46,18 +39,47 @@ export const SellItem = () => {
   //useeffect
   const [itemList, setItemList] = useState<any>([]);
 
-  //Image Upload
-  const imageListRef = ref(storage, "images/");
+  // New Image upload method
+
+  const [file, setFile] = useState<any>("");
+  const [newFile, setNewFile] = useState([])
 
   useEffect(() => {
-    listAll(imageListRef).then((response) => {
-      Promise.all(response.items.map((item) => getDownloadURL(item))).then(
-        (urls) => {
-          setImageList(urls);
+    const uploadFile = () => {
+      const name = new Date().getTime() + file.name;
+
+      const storageRef = ref(storage, name);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+              default:
+              break
+          }
+        },
+        (error) => {
+          console.log(error)
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setNewFile(downloadURL);
+          });
         }
       );
-    });
-  }, []);
+    };
+    file && uploadFile()
+  },[file]);
+
 
   //data effect
   useEffect(() => {
@@ -84,16 +106,16 @@ export const SellItem = () => {
         title: newItemTitle,
         price: newItemPrice,
         description: newItemDescription,
-        images: imageList,
+        images: newFile,
+        userId: auth?.currentUser?.uid, //needed for knowing which user is who
       });
       setShow(true);
     } catch (err) {
       console.error(err);
     }
   };
-
   const handleUpload = () => {
-    uploadImage(imageUpload, setImageList);
+    // uploadImage(imageUpload, setImageList);
     onSubmitData();
     setShow(true);
   };
@@ -102,7 +124,7 @@ export const SellItem = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files ? event.target.files[0] : null;
-    setImageUpload(file);
+    setFile(file);
     const fileLabel = document.querySelector("#fileLabel");
     if (fileLabel && file) {
       fileLabel.textContent = file.name;
@@ -125,7 +147,9 @@ export const SellItem = () => {
             type="file"
             onChange={handleFileInputChange}
           />
-          <label htmlFor="fileInput" id="fileLabel">Choose a Photo</label>
+          <label htmlFor="fileInput" id="fileLabel">
+            Choose a Photo
+          </label>
           <div className="mb-4">
             <input
               type={"string"}

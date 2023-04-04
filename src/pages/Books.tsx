@@ -28,7 +28,7 @@ export function Books() {
   }, []);
 
 
-  const deleteItem = async (id) => {
+  const deleteItem = async (id:string) => {
     const itemDoc = doc(db, "Item", id )
     await deleteDoc(itemDoc)
     getItemList()
@@ -42,12 +42,11 @@ export function Books() {
               (item: {
                 price: number;
                 title: string;
-                id: number;
+                id: string;
                 images: string;                               
               }) => (
                 <Col key={item.id}>
                   <StoreItem {...item} />
-                  <p>{item.images}</p>
                   <button onClick={()=> deleteItem(item.id)}>Delete Item</button>
                 </Col>
                 

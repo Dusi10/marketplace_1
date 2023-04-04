@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 import { formatCurrency } from "../utilities/formatCurrency";
 
 export interface ItemProps{
-    id: number,
+    id: string,
     title: string,
     description?: string,
     price: number,
