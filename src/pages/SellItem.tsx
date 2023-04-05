@@ -39,7 +39,7 @@ export const SellItem = () => {
   // New Image upload method, the file representing the current chosen file and the new files url is stored in the newFile state so it can be easily used
 
   const [file, setFile] = useState<any>("");
-  const [newFile, setNewFile] = useState([]);
+  const [newFile, setNewFile] = useState<string>("");
 
   // Image useeffect, this one gives a new name for the file case if there are multiple files with the same name it will refresh the picture to the newest one so I added a date and time which refreshes before the files name so there wont be two same file names.
   //I also keep track of the files uploading state so later on I can make adjustmants to disable the submit button in case the file hasnt been uploaded yet

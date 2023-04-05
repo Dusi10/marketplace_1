@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import "../formating/pictures.css";
 import { Card, Container } from "react-bootstrap";
-import { Help } from "../pages/Help";
+import { ItemsCollection } from "./ItemsCollection";
 
 const Arrow = styled.div<{ direction: "left" | "right" }>`
   width: 50px;
@@ -78,7 +78,7 @@ const Slider = () => {
         </Arrow>
         <Wrapper>
           <Slide>
-            <Help/>
+            <ItemsCollection/>
           </Slide>
           
         </Wrapper>
