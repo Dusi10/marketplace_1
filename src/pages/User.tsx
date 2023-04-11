@@ -1,3 +1,8 @@
+import { Rating } from "../components/rating";
+
 export const User = () => {
-  return <>User Page</>;
+  return <>
+  User Page
+  <Rating/>
+  </>;
 };
