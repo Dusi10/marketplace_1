@@ -1,4 +1,4 @@
-import { Likes } from "../components/Likes/Dislikes";
+import { Likes } from "../components/Dislikes";
 import { Rating } from "../components/rating";
 
 export const User = () => {

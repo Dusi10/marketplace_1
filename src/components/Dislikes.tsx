@@ -7,7 +7,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { auth, db } from "../../config/firebase";
+import { auth, db } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
