@@ -19,6 +19,7 @@ import {
   doc,
   getDocs,
 } from "firebase/firestore";
+import { NotAccessible } from "@mui/icons-material";
 
 export const SellItem = () => {
   //User auth for authentication purpoise
@@ -28,6 +29,7 @@ export const SellItem = () => {
   const [newItemTitle, setNewItemTitle] = useState("");
   const [newItemPrice, setNewItemPrice] = useState("number");
   const [newItemDescription, setNewItemDescription] = useState("");
+  const [newItemType, setNewItemType] = useState<string>("")
   //firebase database
   const itemsCollectionRef = collection(db, "Item");
   //Pop up after the post has been made
@@ -104,6 +106,7 @@ export const SellItem = () => {
         title: newItemTitle,
         price: newItemPrice,
         description: newItemDescription,
+        itemType: newItemType,
         images: newFile,
         userId: auth?.currentUser?.uid, //needed for knowing which user is who
       });
@@ -165,6 +168,14 @@ export const SellItem = () => {
               onChange={(e) => setNewItemTitle(e.target.value)}
               value={newItemTitle}
             />
+          </div>
+          <div className="mb-4">
+            <select className="select" onChange={(e)=> setNewItemType(e.target.value)}>
+              <option>Choose one</option>
+              <option value="Clothes">Clothes</option>
+              <option value="Item">Item</option>
+              <option value="Rental">Rental</option>
+            </select>
           </div>
           <div className="mb-4">
             <input

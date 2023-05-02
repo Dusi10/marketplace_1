@@ -1,10 +1,10 @@
-import { ItemsCollection } from "../components/ItemsCollection";
+import { AllListings } from "../components/AllListings";
 
 export function Rent() {
   return (
     <div>
       <h1>Rent</h1>
-      <ItemsCollection/>
+      <AllListings typeOfItem="Rent"/>
     </div>
   );
 }

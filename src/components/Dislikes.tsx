@@ -74,7 +74,7 @@ export const Likes = () => {
   return (
     <div>
       <div className="">
-        {/* I added an extra which checks if the counter is higher then 0 if its not it wont show the likes or dislikes with the counter to keep it more clean 
+        {/* I added an extra which checks if the counter is higher then 0 if its not it wont show the likes or dislikes with the counter to keep it more clean
          */}
         <Button variant="outline-primary" onClick={addLike}>
           &#128077;

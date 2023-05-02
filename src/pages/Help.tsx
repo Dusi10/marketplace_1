@@ -1,5 +1,7 @@
+import { SelectListings } from "../components/ItemsCollection";
+
 export const Help = () => {
   return <div>
-    This is the Help page
+    <SelectListings/>
   </div>;
 };

@@ -1,21 +1,26 @@
 import { useState, useEffect } from "react";
-import { db } from "../config/firebase";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { auth, db } from "../config/firebase";
+import { collection, getDocs, deleteDoc, doc, query, where } from "firebase/firestore";
 import { Col, Row } from "react-bootstrap";
 import { StoreItem } from "../components/StoreItem";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export function Listings() {
   const [itemList, setItemList] = useState<any>([]);
 
   const itemsCollectionRef = collection(db, "Item");
 
+  const [user] = useAuthState(auth);
+
+  const itemsQuery = user ? query(itemsCollectionRef, where("userId", "==", user.uid)) : null;
+
   const getItemList = async () => {
     try {
-      const data = await getDocs(itemsCollectionRef);
-      const filteredData = data.docs.map((doc) => ({
+      const data = itemsQuery ? await getDocs(itemsQuery) : null;
+      const filteredData = data ? data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
-      }));
+      })): null;
       setItemList(filteredData);
     } catch (err) {
       console.error(err);
@@ -42,6 +47,7 @@ export function Listings() {
               title: string;
               id: string;
               images: string;
+              itemType: string
             }) => (
               <Col key={item.id}>
                 <StoreItem {...item} />

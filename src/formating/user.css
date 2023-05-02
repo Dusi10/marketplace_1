@@ -107,6 +107,14 @@ label:hover {
   background-color: #0077cc;
   color: #fff;
 }
+.select{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 190px;
+  height: 30px;
+}
 
 
 
