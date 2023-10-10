@@ -11,6 +11,7 @@ import { Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import "../formating/footer.css";
 
 const Container = styled.div`
   display: flex;
@@ -88,12 +89,15 @@ const Payment = styled.img`
 //Styled Footer logic
 const Footer = () => {
   return (
-    <Container className="bg-white mt-3">
+    <div id="page-container">
+      <footer id="footer">
+    <Container
+    className="bg-white mt-3"
+    >
       <Left style={{ marginLeft: "5.5%" }}>
-        <Logo>Marketplace</Logo>
+        <Logo>Vásártér</Logo>
         <Desc>
-          There are many clothes to find the best fitting you, or just find some
-          items which are usefull for you.
+          Fedezd fel egyedi stílusod új és használt kincsekkel! Böngéssz fenntartható módon és találj egyedülálló darabokat másoktól.
         </Desc>
         <SocialContainer>
           <SocialIcon color="3B5999">
@@ -111,16 +115,16 @@ const Footer = () => {
         </SocialContainer>
       </Left>
       <Center>
-        <Title>Useful Links</Title>
+        <Title>Hasznos linkek</Title>
         <List>
           <ListItem>
             <Nav.Link to="/clothes" as={NavLink}>
-              Clothes
+              Ruházat
             </Nav.Link>
           </ListItem>
           <ListItem>
             <Nav.Link to="/Rent" as={NavLink}>
-              Rent
+              Tárgyak
             </Nav.Link>
           </ListItem>
           <ListItem>
@@ -150,13 +154,13 @@ const Footer = () => {
           </ListItem>
           <ListItem>
             <Nav.Link to="/Sellitem" as={NavLink}>
-              Sell
+              Hirdetés létrehozása
             </Nav.Link>
           </ListItem>
         </List>
       </Center>
       <Right>
-        <Title>Contact</Title>
+        <Title>Elérhetőségek</Title>
         <ContactItem>
           <Room style={{ marginRight: "10px" }} /> 9764 Csempeszkopács, István
           király utca 18
@@ -171,6 +175,9 @@ const Footer = () => {
         <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
       </Right>
     </Container>
+    </footer>
+    </div>
+    
   );
 };
 

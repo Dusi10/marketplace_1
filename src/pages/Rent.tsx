@@ -4,7 +4,7 @@ export function Rent() {
   return (
     <div>
       <h1>Rent</h1>
-      <AllListings typeOfItem="Rent"/>
+      <AllListings typeOfItem="Rent" maxItemToShow={100}/>
     </div>
   );
 }

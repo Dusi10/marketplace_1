@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import { formatCurrency } from "../utilities/formatCurrency";
-
+import {HeartComponent} from "./Heart";
+import {Likes} from "./Dislikes";
 export interface ItemProps{
     id: string | number,
     title: string,
@@ -15,9 +16,9 @@ export interface ItemProps{
 // Design for the items which are for sale
 export const StoreItem = ({id, title, price, images, description, itemType }:ItemProps) => {
   const [hovered, setHovered] = useState(false);
-
+    const [isLiked, setIsLiked] = useState(false)
   const handleText = () => {
-    hovered ? setHovered(false) : setHovered(true)
+    setHovered(!hovered)
   };
 
   return (
@@ -55,9 +56,11 @@ export const StoreItem = ({id, title, price, images, description, itemType }:Ite
             <span className="fs-4">{title}</span>
             <span className="ms-2 text-muted">{formatCurrency(price)}</span>
           </Card.Title>
+
         </Card.Body>
       </Card>
     </div>
+
   );
 };
 

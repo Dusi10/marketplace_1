@@ -11,6 +11,8 @@ import { auth, db } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import filledRedHeart from "../pictures/filledredheart.png";
+import unfilledRedHeart from "../pictures/unfilledredheart.png";
 
 interface Like {
   userId: string;
@@ -23,6 +25,7 @@ export const Likes = () => {
   const [user] = useAuthState(auth);
 
   const [like, setLike] = useState<Like[] | null>(null);
+  const [isLiked, setIsLiked] = useState(false)
   const [disLike, setDisLike] = useState<Like[] | null>(null);
 
   const LikesDoc = query(likesRef);
@@ -38,17 +41,19 @@ export const Likes = () => {
   };
   // To make sure that one user can only once like or dislike I added the users auth state which keeps track on whose logged in and also when the user like or dislikes it uploades a userId to the firebase database and the code below checks if that userId is equal to the user.uid which is uploaded to the firebase then the person cant like it anymore, also I added a delet function as well so if the like button is pressed again he can take back the like which he gave and the users uid will be deleted from the firebqase too so he will be able to like it again if he wants to.
   const addLike = async () => {
-    const userLikesQuery = query(likesRef, where("userId", "==", user?.uid));
-    const userLikes = await getDocs(userLikesQuery);
+    // const userLikesQuery = query(likesRef, where("userId", "==", user?.uid));
+    // const userLikes = await getDocs(userLikesQuery);
+    setIsLiked(!isLiked)
 
-    if (userLikes.size === 0) {
-      await addDoc(likesRef, { userId: user?.uid });
-      await getLikes();
-    } else {
-      await deleteDoc(doc(likesRef, userLikes.docs[0].id));
-      await getLikes();
-    }
+    // if (userLikes.size === 0) {
+    //   await addDoc(likesRef, { userId: user?.uid });
+    //   await getLikes();
+    // } else {
+    //   await deleteDoc(doc(likesRef, userLikes.docs[0].id));
+    //   await getLikes();
+    // }
   };
+  // isLiked ot az adott érték ellentettjére kell állítani, illetve a likeCountot növel 1 el ha az isliked true ha false akkor csökkentenő 1 el
 
   const addDisLike = async () => {
     const userDisLikesQuery = query(
@@ -65,7 +70,7 @@ export const Likes = () => {
       await getDislikes();
     }
   };
-  // a useeffect needed to re render the states when it changes so we can see the new values without updating the page
+
   useEffect(() => {
     getLikes();
     getDislikes();
@@ -73,17 +78,18 @@ export const Likes = () => {
 
   return (
     <div>
-      <div className="">
-        {/* I added an extra which checks if the counter is higher then 0 if its not it wont show the likes or dislikes with the counter to keep it more clean
-         */}
-        <Button variant="outline-primary" onClick={addLike}>
-          &#128077;
-        </Button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+
         {like && like.length > 0 && <p>Likes: {like?.length} </p>}
-        <Button variant="outline-primary" onClick={addDisLike}>
-          &#128078;
-        </Button>
-        {disLike && disLike.length > 0 && <p>Dislikes: {disLike?.length} </p>}
+        <img
+            onClick={addLike}
+            src={isLiked ? filledRedHeart : unfilledRedHeart}
+            style={{
+              width: "30px",
+              height: "30px",
+              cursor: "pointer"
+            }}
+        />
       </div>
     </div>
   );

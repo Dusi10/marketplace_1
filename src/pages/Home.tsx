@@ -3,6 +3,7 @@ import Slider from "../components/Slider";
 import { auth } from "../config/firebase";
 import "../formating/pictures.css";
 
+
 export function Home() {
   return (
     <>
@@ -18,10 +19,10 @@ export function Home() {
             maxHeight: "370px"
           }}
         />
-        <span className="texts">Change Your wardrobe, Find exciting goods.</span>
+        <span className="texts message">Cseréld le a ruhatárad, találj igazlmas ruhadarabokat.</span>
           <input
             type="input"
-            placeholder="What are you looking for?"
+            placeholder="Mit keresel?"
             width={"80%"}
             className="search-field"
           />

@@ -5,6 +5,7 @@ import { auth, provider } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "../formating/user.css";
 import { signOut } from "firebase/auth";
+import {ProfileLogo} from "./ProfileLogo";
 
 // Logic for Google authenticator
 export const Login = () => {
@@ -21,17 +22,17 @@ export const Login = () => {
   };
 
   return (
-    <div>
-      {user ? (
-        <div className="user-info">
-          <span>{user.displayName}</span>
-          <Button onClick={signUserOut} variant="outline-primary" >Logout</Button>
-        </div>
-      ) : (
-        <div>
-          <Button onClick={signInWithGoogle} variant="outline-primary">Login</Button>
-        </div>
-      )}
-    </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
+        {!user && (
+            <div>
+              <Button onClick={signInWithGoogle} variant="outline-primary">Login</Button>
+            </div>
+        )}
+          {user && (
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <ProfileLogo profilePicture={user?.photoURL || ""} logOutLogic={signUserOut}/>
+              </div>
+          )}
+      </div>
   );
 };

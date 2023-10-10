@@ -59,7 +59,7 @@ export function SelectListings() {
       console.log(err);
     }
   };
-  
+
 
   useEffect(() => {
     getItemList();
@@ -68,7 +68,7 @@ export function SelectListings() {
   return (
     <div>
       <div>
-        <>Choose a type: </>
+        <>Search for a type: </>
         <select
           value={filterOption}
           onChange={(e) => setFilterOption(e.target.value)}

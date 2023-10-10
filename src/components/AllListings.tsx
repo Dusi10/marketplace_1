@@ -1,92 +1,92 @@
-
-import { useState, useEffect } from "react";
-import { storage } from "../config/firebase";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
+import {useState, useEffect} from "react";
+import {storage} from "../config/firebase";
+import {ref, listAll, getDownloadURL} from "firebase/storage";
 import "../formating/format.css";
-import { db } from "../config/firebase";
-import { collection, getDocs } from "firebase/firestore";
-import { Col, Row } from "react-bootstrap";
-import { StoreItem } from "./StoreItem";
+import "../formating/pictures.css";
+import {db} from "../config/firebase";
+import {collection, getDocs} from "firebase/firestore";
+import {Col, Row} from "react-bootstrap";
+import {StoreItem} from "./StoreItem";
 
 interface Props {
-  typeOfItem: string
+    typeOfItem: string,
+    maxItemToShow: number
 }
 
-export function AllListings({ typeOfItem }: Props) {
-  const [itemList, setItemList] = useState<any>([]);
-  //Loading phase
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export function AllListings({typeOfItem, maxItemToShow}: Props) {
+    const [itemList, setItemList] = useState<any>([]);
 
-  const itemsCollectionRef = collection(db, "Item");
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  //Képek adatbázisből lehúzása
-  const [imageList, setImageList] = useState<string[]>([]);
+    const itemsCollectionRef = collection(db, "Item");
 
-  
-  const imageListRef = ref(storage, "images/");
-  useEffect(() => {
-    setIsLoading(true);
-    listAll(imageListRef).then((response) => {
-      Promise.all(response.items.map((item) => getDownloadURL(item))).then(
-        (urls) => {
-          setImageList(urls);
-          setIsLoading(false);
+    const [imageList, setImageList] = useState<string[]>([]);
+
+
+    const imageListRef = ref(storage, "images/");
+    useEffect(() => {
+        setIsLoading(true);
+        listAll(imageListRef).then((response) => {
+            Promise.all(response.items.map((item) => getDownloadURL(item))).then(
+                (urls) => {
+                    setImageList(urls);
+                    setIsLoading(false);
+                }
+            );
+        });
+    }, []);
+
+    //Elválasztás
+
+    const getItemList = async () => {
+        try {
+            const data = await getDocs(itemsCollectionRef);
+            const filteredItems = data.docs
+                .map((doc, index) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                    img: imageList[index],
+                    itemType: doc.data().itemType,
+                }))
+                .filter((item) => item.itemType === typeOfItem || typeOfItem === "All");
+
+            const limitedItemList = filteredItems.slice(0, maxItemToShow)
+            setItemList(limitedItemList);
+        } catch (err) {
+            console.log(err);
         }
-      );
-    });
-  }, []);
-
-  //Elválasztás
-
-  const getItemList = async () => {
-    //Read the data
-    //See the item list
-    try {
-        const data = await getDocs(itemsCollectionRef);
-        const filteredItems = data.docs
-          .map((doc, index) => ({
-            ...doc.data(),
-            id: doc.id,
-            img: imageList[index],
-            itemType: doc.data().itemType,
-          }))
-          .filter((item) => item.itemType === typeOfItem || typeOfItem === "All");
-      setItemList(filteredItems);
-      } catch (err) {
-        console.log(err);
-      }
     };
 
-  useEffect(() => {
-    getItemList();
-  }, [typeOfItem]);
+    useEffect(() => {
+        getItemList();
+    }, [typeOfItem]);
 
-  
-  return (
-    <div>
-      <div>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <Row md={2} xs={1} lg={4} className={"g-3"}>
-            {itemList.map(
-              (item: {
-                price: number;
-                title: string;
-                id: number;
-                images: string;
-                description:string;
-                itemType:string                              
-              }) => (
-                <Col key={item.id}>
-                  <StoreItem {...item} />
-                </Col>
-              )
-              
-            )}
-          </Row>
-        )}
-      </div>
-    </div>
-  );
+
+    return (
+        <div>
+            <div>
+                {isLoading ? (
+                    <div>Loading...</div>
+                ) : (itemList.length < 1
+                        ? `Jelenleg nincsen ${typeOfItem} hirdetés`
+                        : <Row md={2} xs={1} lg={4} className={"g-3"}>
+                            {itemList.map(
+                                (item: {
+                                    price: number;
+                                    title: string;
+                                    id: number;
+                                    images: string;
+                                    description: string;
+                                    itemType: string
+                                }) => (
+                                    <Col key={item.id}>
+                                        <StoreItem {...item} />
+                                    </Col>
+                                )
+                            )}
+                        </Row>
+                )}
+            </div>
+        </div>
+    );
 }
