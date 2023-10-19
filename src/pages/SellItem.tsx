@@ -1,33 +1,31 @@
-import { useNavigate } from "react-router-dom";
 import { auth, db, storage } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "../formating/user.css";
+import "../formating/format.css"
 import { Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import {
-  ref,
-  uploadBytes,
-  listAll,
-  getDownloadURL,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { v4 } from "uuid";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-} from "firebase/firestore";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { itemSchema } from "../components/ItemValidation";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {useImmer} from "use-immer"
 
 export const SellItem = () => {
+  const [newItem, setNewItem] = useState(
+      {
+        description: "",
+        image: "",
+        itemType: "",
+        price : "",
+        title : "",
+        userId: ""
+      }
+  )
   //User auth for authentication purpoise
   const [user] = useAuthState(auth);
 
-  // these states are representing the datas which uploading to the firebase
-  const [newItemTitle, setNewItemTitle] = useState("");
-  const [newItemPrice, setNewItemPrice] = useState("number");
-  const [newItemDescription, setNewItemDescription] = useState("");
   //firebase database
   const itemsCollectionRef = collection(db, "Item");
   //Pop up after the post has been made
@@ -98,12 +96,13 @@ export const SellItem = () => {
   }, []);
 
   //When the button is pressed the values are set with the fields current value and uploades it to the firebase database and also the setShow is getting a truthy value case in case it gets a truthy value it shows up and after it we can close it, it's just a nice way to show that the upload is done
-  const onSubmitData = async () => {
+  const onSubmitData = async (formData: any) => {
     try {
       await addDoc(itemsCollectionRef, {
-        title: newItemTitle,
-        price: newItemPrice,
-        description: newItemDescription,
+        title: newItem.title,
+        price: newItem.price,
+        description: newItem.description,
+        itemType: newItem.itemType,
         images: newFile,
         userId: auth?.currentUser?.uid, //needed for knowing which user is who
       });
@@ -114,39 +113,96 @@ export const SellItem = () => {
   };
   //Resets the fields value after pushing it
   const resetFields = () => {
-    setNewItemDescription("");
-    setNewItemPrice("");
-    setNewItemTitle("");
+    setNewItem({
+      ...newItem,
+      description: "",
+      image: "",
+      itemType: "",
+      price: "",
+      title: ""
+    })
+
+
   };
 
-  //When we have multiple functions which we want to trigger when pressing the button we need to make a new function which triggers the functions
-  const handleUpload = () => {
-    onSubmitData();
-    setShow(true);
-    resetFields();
-  };
 
   //We want to display the chosen files name so I added a fileLabel to the on change event but we also want to set the current files value with the chosen file so we need to make a function which can trigger both function at the same time when the onChange event triggers.
-  const handleFileInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
+   // setNewItem({
+   //       ...newItem,
+   //       image: event.target.files
+   //      }
+   // )
     setFile(file);
     const fileLabel = document.querySelector("#fileLabel");
-    if (fileLabel && file) {
-      fileLabel.textContent = file.name;
+  };
+
+  const resolver = yupResolver(itemSchema);
+
+    //When we have multiple functions which we want to trigger when pressing the button we need to make a new function which triggers the functions
+  const handleUpload = async () => {
+    try {
+      // Manually validate the form data using the resolver
+      const formData = await resolver;
+
+      // If validation is successful, proceed with onSubmitData
+      await onSubmitData(formData);
+
+      // Then, setShow and resetFields as needed
+      setShow(true);
+      resetFields();
+      setFile("")
+    } catch (validationErrors) {
+      // Handle validation errors, if any
+      console.error(validationErrors);
     }
   };
 
+  function handleDescriptionChange(e:any) {
+    setNewItem({
+      ...newItem,
+      description: e.target.value
+    })
+  }
+  function handleItemTypeChange(e:any) {
+    setNewItem({
+      ...newItem,
+      itemType: e.target.value
+    })
+  }
+  function handlePriceChange(e:any) {
+    setNewItem({
+      ...newItem,
+      price: e.target.value
+    })
+  }
+  function handleItemTitleChange(e:any) {
+    setNewItem({
+      ...newItem,
+      title: e.target.value
+    })
+  }
+
   return (
-    <>
+
       <div className="user-container">
-        <img
-          className="user-image mb-2"
-          src={user?.photoURL || ""}
-          alt="User profile"
-        />
-        <p className="user-name mb-3">{user?.displayName}</p>
+        {/*<img*/}
+        {/*    className="search-picture"*/}
+        {/*    src="src\pictures\usm-cover-photo.jpg"*/}
+        {/*    alt="USM Cover Photo"*/}
+        {/*    style={{*/}
+        {/*      width: "100%",*/}
+        {/*      height: "auto",*/}
+        {/*      objectFit: "cover",*/}
+        {/*    }}*/}
+        {/*/>*/}
+        {/*<img*/}
+        {/*  className="user-image mb-2"*/}
+        {/*  src={user?.photoURL || ""}*/}
+        {/*  alt="User profile"*/}
+        {/*/>*/}
+        {/*<p className="user-name mb-3">{user?.displayName}</p>*/}
         <div className="listing_data mb-3">
           <input
             id="fileInput"
@@ -154,39 +210,55 @@ export const SellItem = () => {
             type="file"
             onChange={handleFileInputChange}
           />
-          <label htmlFor="fileInput" id="fileLabel">
-            Choose a Photo
+          <label htmlFor="fileInput">
+            { file === "" ? "Choose a file" : file.name}
           </label>
           <div className="mb-4">
             <input
-              type={"string"}
+              type={"text"}
               className="input-title"
               placeholder="Title"
-              onChange={(e) => setNewItemTitle(e.target.value)}
-              value={newItemTitle}
+              onChange={handleItemTitleChange}
+              value={newItem.title}
+              required={true}
             />
+            <p>{}</p>
+          </div>
+          <div className="mb-4">
+            <select
+              className="select"
+              onChange={handleItemTypeChange}
+            >
+              <option>Choose one</option>
+              <option value="Clothes">Clothes</option>
+              <option value="Item">Item</option>
+              <option value="Rental">Rental</option>
+            </select>
           </div>
           <div className="mb-4">
             <input
               type={"number"}
               className="input-price"
               placeholder="Price"
-              onChange={(e) => setNewItemPrice(e.target.value)}
-              value={newItemPrice}
+              onChange={handlePriceChange}
+              value={newItem.price}
+              required={true}
             />
           </div>
           <div className="mb-4">
             <textarea
               className="input-description"
               placeholder="Description"
-              onChange={(e) => setNewItemDescription(e.target.value)}
-              value={newItemDescription}
+              onChange={handleDescriptionChange}
+              value={newItem.description}
             />
+
           </div>
-          <Button onClick={handleUpload} variant="outline-primary">
+          <button className={"hover-2"}
+                  disabled={newItem.title.length < 2 || newItem.price.length < 1 || newItem.itemType === "Choose one"}
+                  onClick={handleUpload}>
             Upload
-          </Button>
-          {/*Pop up for when the upload is complete*/}
+          </button>
           <Modal show={show} onHide={() => setShow(false)}>
             <Modal.Header closeButton>
               <Modal.Title>Upload complete!</Modal.Title>
@@ -200,6 +272,5 @@ export const SellItem = () => {
           </Modal>
         </div>
       </div>
-    </>
   );
 };

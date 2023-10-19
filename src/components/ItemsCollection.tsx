@@ -7,76 +7,90 @@ import { collection, getDocs } from "firebase/firestore";
 import { Col, Row } from "react-bootstrap";
 import { StoreItem } from "./StoreItem";
 
-export function ItemsCollection() {
+interface Item {
+  id: string;
+  img: string;
+  itemType: string;
+}
+
+export function SelectListings() {
   const [itemList, setItemList] = useState<any>([]);
   //Loading phase
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const itemsCollectionRef = collection(db, "Item");
 
-  //Képek adatbázisből lehúzása
+  //Képek adatbázisból lehúzása
   const [imageList, setImageList] = useState<string[]>([]);
-
-  
   const imageListRef = ref(storage, "images/");
+
+  // Filter state
+  const [filterOption, setFilterOption] = useState("All");
+
   useEffect(() => {
     setIsLoading(true);
-    listAll(imageListRef).then((response) => {
-      Promise.all(response.items.map((item) => getDownloadURL(item))).then(
-        (urls) => {
-          setImageList(urls);
-          setIsLoading(false);
-        }
-      );
-    });
+    listAll(imageListRef)
+      .then((response) =>
+        Promise.all(response.items.map((item) => getDownloadURL(item)))
+      )
+      .then((urls) => {
+        setImageList(urls);
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error));
   }, []);
 
-  //Elválasztás
-
   const getItemList = async () => {
-    //Read the data
-    //See the item list
+    // Read the data
     try {
       const data = await getDocs(itemsCollectionRef);
-      const filteredItems = data.docs.map((doc, index) => ({
-        ...doc.data(),
-        id: doc.id,
-        img: imageList[index],
-      }));
+      const filteredItems = data.docs
+        .map((doc, index) => ({
+          ...doc.data(),
+          id: doc.id,
+          img: imageList[index],
+          itemType: doc.data().itemType,
+        }))
+        .filter(
+          (item) => filterOption === "All" || item.itemType === filterOption
+        );
       setItemList(filteredItems);
     } catch (err) {
       console.log(err);
     }
   };
+
+
   useEffect(() => {
     getItemList();
-  }, []);
+  }, [filterOption]);
 
-  
   return (
     <div>
       <div>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <Row md={2} xs={1} lg={4} className={"g-3"}>
-            {itemList.map(
-              (item: {
-                price: number;
-                title: string;
-                id: number;
-                images: string;
-                description:string                               
-              }) => (
-                <Col key={item.id}>
-                  <StoreItem {...item} />
-                </Col>
-              )
-              
-            )}
-          </Row>
-        )}
+        <>Search for a type: </>
+        <select
+          value={filterOption}
+          onChange={(e) => setFilterOption(e.target.value)}
+          className="mb-4"
+        >
+          <option value="All">All</option>
+          <option value="Clothes">Clothes</option>
+          <option value="Item">Item</option>
+          <option value="Rental">Rental</option>
+        </select>
       </div>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <Row md={2} xs={1} lg={4} className={"g-3"}>
+          {itemList.map((item: any) => (
+            <Col key={item.id}>
+              <StoreItem {...item} />
+            </Col>
+          ))}
+        </Row>
+      )}
     </div>
   );
 }
