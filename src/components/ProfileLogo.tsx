@@ -1,13 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from "react";
 import {Button, Container, Nav, Navbar as NavbarBs} from "react-bootstrap";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import "../formating/format.css"
+
 interface Logo {
     profilePicture: string;
     logOutLogic: VoidFunction
 }
 
-export function ProfileLogo({ profilePicture, logOutLogic }: Logo) {
+export function ProfileLogo({profilePicture, logOutLogic}: Logo) {
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -67,19 +68,23 @@ export function ProfileLogo({ profilePicture, logOutLogic }: Logo) {
                     {/* Dropdown content goes here */}
                     <ul style={{marginRight: "10px", marginTop: "7px"}}>
                         <li>
-                            <Link className={"default-link"} to={"/User"}>User</Link>
+                            <Link className={"default-link"} to={"/User"}>Felhasználó</Link>
                         </li>
                         <li>
-                            <Link className={"default-link"} to={"/Listings"}>Your Listings</Link>
+                            <Link className={"default-link"} to={"/Listings"}>Hirdetéseid</Link>
                         </li>
                         <li>
-                            <Link className={"default-link"} to={"/Help"}>Help</Link>
+                            <Link className={"default-link"} to={"/Help"}>Segítség</Link>
                         </li>
                         <li>
-                            <Link className={"default-link"} to={"/Sellitem"}>Sell Item</Link>
+                            <Link className={"default-link"} to={"/Sellitem"}>Tárgy Eladás</Link>
                         </li>
                         <li>
-                            <p className={"hover-2"} onClick={logOutLogic} >Logout</p>
+                            <Link className={"default-link"} to={"/Favourites"}>Kedvencek</Link>
+                        </li>
+                        <p>Üzenetek</p>
+                        <li>
+                            <p className={"hover-2"} onClick={logOutLogic}>Kijelentkezés</p>
                         </li>
                     </ul>
                 </div>

@@ -4,6 +4,7 @@ import "../formating/format.css";
 import "../formating/user.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
+import {reverseEasing} from "framer-motion";
 
 
 export const navLinkStyle = {
@@ -27,6 +28,9 @@ export const FastNavbar = () => {
           </NavLink>
           <NavLink className={"reverseLined"} style={navLinkStyle} to="/rent">
             Bérelhető eszközök
+          </NavLink>
+          <NavLink className={"reverseLined"} to={"/Favourites"}>
+            Kedvencek
           </NavLink>
         </Nav>
         {user ? (
