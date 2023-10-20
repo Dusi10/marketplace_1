@@ -86,29 +86,31 @@ export function Listings() {
                                 <StoreItem {...item} />
 
                                 {isEditing && editItemId === item.id ? (
-                                    <div style={{display: 'grid'}}>
+                                    <div style={{display: 'grid', marginTop: "10px"}}>
                                         <input
                                             type="text"
                                             placeholder="Cím"
                                             value={editedTitle}
+                                            style={{borderRadius: "10px", paddingLeft: "7px"}}
                                             onChange={(e) => setEditedTitle(e.target.value)}
                                         />
                                         <input
                                             type="number"
                                             placeholder="Ár"
                                             value={editedPrice}
+                                            style={{borderRadius: "10px", paddingLeft: "7px"}}
                                             onChange={(e) => setEditedPrice(e.target.value)}
                                         />
-                                        <button className={"hover-4"} onClick={saveItem}>Mentés
+                                        <button className={"custom-button fill-button"} onClick={saveItem}>Mentés
                                         </button>
                                     </div>
                                 ) : (
-                                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                                        <button className={"coloredDash"}
+                                    <div style={{display: 'flex', justifyContent: 'space-between', marginTop: "10px"}}>
+                                        <button className={"custom-button fill-button"}
                                                 onClick={() => handleEditClick(item)}>
                                             Szerkesztés
                                         </button>
-                                        <button className={"hover-4"} onClick={() => deleteItem(item.id)}>Tárgy törlése
+                                        <button className={"custom-button fill-button"} onClick={() => deleteItem(item.id)}>Tárgy törlése
                                         </button>
                                     </div>)}
                             </Col>

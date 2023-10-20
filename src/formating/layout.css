@@ -97,12 +97,14 @@
 }
 
 .custom-button {
+    background: black;
     border: none;
     padding: 6px 18px;
     border-radius: 24px;
     font-size: 10px;
     font-size: 0.8rem;
     letter-spacing: 1px;
+    border: 1px solid rgba(17, 25, 40, 25);;
     cursor: pointer;
 }
 
@@ -135,6 +137,8 @@
     transform: scale(1.125);
     border-color: rgba(255, 255, 255, 0.9);
     filter: drop-shadow(0 10px 5px rgba(0, 0, 0, 0.125));
+    border: 1px solid rgba(17, 25, 40, 25);
     transition: all .4s ease;
+
 }
 

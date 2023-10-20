@@ -19,12 +19,16 @@ export const Navbar = () => {
                     <NavLink style={navLinkStyle} className={"reverseLined"} to="/Help">
                         Segítség
                     </NavLink>
-                    {user ? (<NavLink style={navLinkStyle} className={"reverseLined"} to="/User">
+                    {user && <NavLink style={navLinkStyle} className={"reverseLined"} to="/ChatPage">
+                        Chat
+                    </NavLink>}
+
+                    {user && (<NavLink style={navLinkStyle} className={"reverseLined"} to="/User">
                         Felhasználó
-                    </NavLink>) : ("")}
-                    {user ? (<NavLink style={navLinkStyle} className={"reverseLined"} to="/Listings">
+                    </NavLink>)}
+                    {user && (<NavLink style={navLinkStyle} className={"reverseLined"} to="/Listings">
                         Hirdetéseim
-                    </NavLink>) : ("")}
+                    </NavLink>)}
                 </Nav>
                 <Login/>
             </Container>

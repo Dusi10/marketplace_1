@@ -29,11 +29,12 @@ export const FastNavbar = () => {
           <NavLink className={"reverseLined"} style={navLinkStyle} to="/rent">
             Bérelhető eszközök
           </NavLink>
-          <NavLink className={"reverseLined"} to={"/Favourites"}>
+          {user &&           <NavLink className={"reverseLined"} to={"/Favourites"}>
             Kedvencek
-          </NavLink>
+          </NavLink>}
+
         </Nav>
-        {user ? (
+        {user && (
           <div className="user-info">
             <span>
               <NavLink className={"hover-3"} style={navLinkStyle} to="/Sellitem" >
@@ -42,8 +43,6 @@ export const FastNavbar = () => {
             </span>
           </div>
 
-        ) : (
-          ""
         )}
       </Container>
     </NavbarBs>

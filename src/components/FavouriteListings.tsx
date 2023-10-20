@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {storage} from "../config/firebase";
+import {auth, storage} from "../config/firebase";
 import {ref, listAll, getDownloadURL} from "firebase/storage";
 import "../formating/format.css";
 import "../formating/pictures.css";
@@ -7,18 +7,21 @@ import {db} from "../config/firebase";
 import {collection, getDocs} from "firebase/firestore";
 import {Col, Row} from "react-bootstrap";
 import {StoreItem} from "./StoreItem";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 interface Props {
     typeOfItem: string,
-    maxItemToShow: number,
+    maxItemToShow: number
 }
 
-export function AllListings({typeOfItem, maxItemToShow}: Props) {
+export function FavouriteListings() {
+    const [user] = useAuthState(auth)
+    
     const [itemList, setItemList] = useState<any>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const itemsCollectionRef = collection(db, "Item");
+    const itemsCollectionRef = collection(db, "Likes");
 
     const [imageList, setImageList] = useState<string[]>([]);
 
@@ -46,20 +49,21 @@ export function AllListings({typeOfItem, maxItemToShow}: Props) {
                     ...doc.data(),
                     id: doc.id,
                     img: imageList[index],
-                    itemType: doc.data().itemType,
+                    like: doc.data().like,
+                    userId: doc.data().userId
                 }))
-                .filter((item) => item.itemType === typeOfItem || typeOfItem === "All");
-
-            const limitedItemList = filteredItems.slice(0, maxItemToShow)
-            setItemList(limitedItemList);
+                .filter((item) => item.like === true && item.userId === user?.uid); // Change "true" to true
+    
+            setItemList(filteredItems);
         } catch (err) {
             console.log(err);
         }
     };
+    
 
     useEffect(() => {
         getItemList();
-    }, [typeOfItem]);
+    }, []);
 
 
     return (
@@ -68,7 +72,7 @@ export function AllListings({typeOfItem, maxItemToShow}: Props) {
                 {isLoading ? (
                     <div>Loading...</div>
                 ) : (itemList.length < 1
-                        ? `Jelenleg nincsen ${typeOfItem} hirdetés`
+                        ? `Jelenleg nincsen kedvenc hirdetés`
                         : <Row md={2} xs={1} lg={4} className={"g-3"}>
                             {itemList.map(
                                 (item: {
@@ -76,11 +80,9 @@ export function AllListings({typeOfItem, maxItemToShow}: Props) {
                                     title: string;
                                     id: number;
                                     images: string;
-                                    description: string;
-                                    itemType: string
                                 }) => (
                                     <Col key={item.id}>
-                                        <StoreItem {...item} />
+                                        <StoreItem itemType={""} {...item} />
                                     </Col>
                                 )
                             )}

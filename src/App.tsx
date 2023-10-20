@@ -19,6 +19,8 @@ import Footer from "./components/Footer";
 import {SellItem} from "./pages/SellItem";
 import {SelectListings} from "./components/ItemsCollection";
 import {Favourites} from "./pages/Favourites";
+import ChatPage from "./pages/ChatPage";
+import {useContext} from "react";
 
 function App() {
     return (
@@ -38,6 +40,7 @@ function App() {
                     <Route path="/Listings" element={<Listings/>}/>
                     <Route path="Sellitem" element={<SellItem/>}/>
                     <Route path="/Favourites" element={<Favourites/>}/>
+                    <Route path="/ChatPage" element={<ChatPage/>}/>
                 </Routes>
 
 

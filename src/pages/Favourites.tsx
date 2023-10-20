@@ -1,11 +1,11 @@
-import { AllListings } from "../components/AllListings";
+import { FavouriteListings } from "../components/FavouriteListings";
 
 export function Favourites() {
 
     return (
         <div>
-            <h1>Clothes</h1>
-            <AllListings typeOfItem="Clothes" maxItemToShow={100}/>
+            <h1>Kedvencek</h1>
+            <FavouriteListings/>
         </div>
     );
 }
