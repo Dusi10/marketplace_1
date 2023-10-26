@@ -12,8 +12,8 @@
 }
 
 .square {
-    width: 200px; /* Adjust the width and height as needed */
-    height: 200px;
+    width: 400px; /* Adjust the width and height as needed */
+    height: 300px;
     background-color: white;
     border: 1px solid black;
     margin: 0 10px; /* Adjust the margin between squares as needed */
@@ -22,13 +22,13 @@
 
 .inner-square {
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     background-color: white; /* Updated background color to black */
     position: absolute;
     top: 0;
-    left: 25%;
-    transform: translateY(-20%);
+    left: 30%;
+    transform: translateY(-35%);
     border: 1px solid black; /* Added a border to make it stand out */
 }
 /* Updated CSS with renamed class names */

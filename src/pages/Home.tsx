@@ -6,17 +6,17 @@ import "../formating/pictures.css";
 
 export function Home() {
   return (
-    <>
-      <Container className="search mb-5 bg-white">
+    <div>
+      <Container className="search mb-5 " >
         <img
-          className="search-picture"
           src="src\pictures\usm-cover-photo.jpg"
           alt="USM Cover Photo"
           style={{
             width: "100%",
             height: "auto",
             objectFit: "cover",
-            maxHeight: "370px"
+            maxHeight: "370px",
+            borderRadius: "20px"
           }}
         />
         <span className="texts message">Cseréld le a ruhatárad, találj igazlmas ruhadarabokat.</span>
@@ -31,6 +31,6 @@ export function Home() {
           
       </Container>
       <Slider/>
-    </>
+    </div>
   );
 }

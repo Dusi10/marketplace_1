@@ -11,52 +11,50 @@ export interface ItemProps {
   description?: string,
   price: number,
   images: string,
-  itemType: string
+  itemType: string,
+  onLikeUpdate: VoidFunction
 }
 
-export const StoreItem = ({ id, title, price, images, description, itemType }: ItemProps) => {
+export const StoreItem = ({ id, title, price, images, description, itemType, onLikeUpdate }: ItemProps) => {
   const [hovered, setHovered] = useState(false);
-  const [isLiked, setIsLiked] = useState(false); // Initialize as false
+  const [isLiked, setIsLiked] = useState(false);
   const [user] = useAuthState(auth);
 
   useEffect(() => {
-    // Check if the user has liked this item
-    if (user) {
-      const likesCollectionRef = collection(db, "Likes");
-      const q = query(likesCollectionRef, where("userId", "==", user.uid), where("images", "==", images));
-      
-      getDocs(q).then((querySnapshot) => {
-        if (!querySnapshot.empty) {
-          // User has liked this item
-          setIsLiked(true);
-        } else {
-          // User has not liked this item
-          setIsLiked(false);
-        }
-      }).catch((error) => {
-        console.error("Error checking like:", error);
-      });
-    }
-  }, [user, images]);
+    const checkLikeStatus = async () => {
+      const likeCollectionRef = collection(db, "Likes");
+      const q = query(likeCollectionRef, where("userId", "==", user?.uid), where("images", "==", images));
 
-  const likeItem = async () => {
-    setIsLiked(!isLiked);
-
-    const likeCollectionRef = collection(db, "Likes");
-
-    try {
-      if (isLiked) {
-        // If already liked, remove the like
-        const q = query(likeCollectionRef, where("userId", "==", user?.uid), where("images", "==", images));
+      try {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          querySnapshot.forEach((doc) => {
-            deleteDoc(doc.ref);
-          });
+          setIsLiked(true);
+        } else {
+          setIsLiked(false);
         }
+      } catch (error) {
+        console.error("Error checking like:", error);
+      }
+    };
+
+    checkLikeStatus();
+  }, []);
+
+  const likeItem = async () => {
+    const likeCollectionRef = collection(db, "Likes");
+
+    try {
+      const q = query(likeCollectionRef, where("userId", "==", user?.uid), where("images", "==", images));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach(async (doc) => {
+          setIsLiked(false);
+          await deleteDoc(doc.ref);
+        });
       } else {
-        // If not liked, add the like
+        setIsLiked(true);
         await addDoc(likeCollectionRef, {
           like: true,
           images: images,
@@ -65,6 +63,7 @@ export const StoreItem = ({ id, title, price, images, description, itemType }: I
           title: title,
         });
       }
+      onLikeUpdate()
     } catch (error) {
       console.error("Error adding/removing like:", error);
     }

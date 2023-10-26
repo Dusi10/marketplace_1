@@ -9,13 +9,14 @@ import {Col, Row} from "react-bootstrap";
 import {StoreItem} from "./StoreItem";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+
 interface Props {
     typeOfItem: string,
-    maxItemToShow: number
+    maxItemToShow: number,
 }
 
 export function FavouriteListings() {
-    const [user] = useAuthState(auth)
+    const [user] = useAuthState(auth);
     
     const [itemList, setItemList] = useState<any>([]);
 
@@ -24,6 +25,8 @@ export function FavouriteListings() {
     const itemsCollectionRef = collection(db, "Likes");
 
     const [imageList, setImageList] = useState<string[]>([]);
+
+    const [refreshKey, setRefreshKey] = useState(0);
 
 
     const imageListRef = ref(storage, "images/");
@@ -37,7 +40,7 @@ export function FavouriteListings() {
                 }
             );
         });
-    }, []);
+    }, [refreshKey]);
 
     //Elválasztás
 
@@ -52,18 +55,21 @@ export function FavouriteListings() {
                     like: doc.data().like,
                     userId: doc.data().userId
                 }))
-                .filter((item) => item.like === true && item.userId === user?.uid); // Change "true" to true
-    
+                .filter((item) => item.like === "true" || item.userId === user?.uid);
+
             setItemList(filteredItems);
         } catch (err) {
             console.log(err);
         }
     };
-    
 
     useEffect(() => {
         getItemList();
-    }, []);
+    }, [refreshKey]);
+
+    const handleUnlikeItem = () => {
+        setRefreshKey((prevKey) => prevKey + 1); // Increment refreshKey
+    };
 
 
     return (
@@ -72,7 +78,7 @@ export function FavouriteListings() {
                 {isLoading ? (
                     <div>Loading...</div>
                 ) : (itemList.length < 1
-                        ? `Jelenleg nincsen kedvenc hirdetés`
+                        ? `Jelenleg nincsen kedvenc hirdetésed`
                         : <Row md={2} xs={1} lg={4} className={"g-3"}>
                             {itemList.map(
                                 (item: {
@@ -80,9 +86,10 @@ export function FavouriteListings() {
                                     title: string;
                                     id: number;
                                     images: string;
+                                    
                                 }) => (
                                     <Col key={item.id}>
-                                        <StoreItem itemType={""} {...item} />
+                                        <StoreItem onLikeUpdate={handleUnlikeItem} itemType={""} {...item} />
                                     </Col>
                                 )
                             )}

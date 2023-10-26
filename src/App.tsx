@@ -8,9 +8,9 @@ import {Container} from "react-bootstrap";
 import {Home} from "./pages/Home";
 import {Help} from "./pages/Help";
 import {User} from "./pages/User";
-import {Navbar} from "./components/Navbar";
+import {Navbar} from "./components/Navbars/Navbar";
 import {NotFound} from "./pages/NotFound";
-import {FastNavbar} from "./components/FastNavbar";
+import {FastNavbar} from "./components/Navbars/FastNavbar";
 import {Clothes} from "./pages/Clothes";
 import {Items} from "./pages/Items";
 import {Rent} from "./pages/Rent";
@@ -42,8 +42,6 @@ function App() {
                     <Route path="/Favourites" element={<Favourites/>}/>
                     <Route path="/ChatPage" element={<ChatPage/>}/>
                 </Routes>
-
-
             </Container>
             <Footer/>
 

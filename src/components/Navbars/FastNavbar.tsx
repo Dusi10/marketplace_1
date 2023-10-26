@@ -1,9 +1,7 @@
 import { Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import "../formating/format.css";
-import "../formating/user.css";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../config/firebase";
+import { auth } from "../../config/firebase";
 import {reverseEasing} from "framer-motion";
 
 
@@ -29,6 +27,9 @@ export const FastNavbar = () => {
           <NavLink className={"reverseLined"} style={navLinkStyle} to="/rent">
             Bérelhető eszközök
           </NavLink>
+          {user && (<NavLink style={navLinkStyle} className={"reverseLined"} to="/Listings">
+                        Hirdetéseim
+                    </NavLink>)}
           {user &&           <NavLink className={"reverseLined"} to={"/Favourites"}>
             Kedvencek
           </NavLink>}

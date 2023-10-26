@@ -2,6 +2,7 @@ import { auth, db, storage } from "../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "../formating/user.css";
 import "../formating/format.css"
+import picture from "../../public/pictures/imgs/cool_pic.jpg"
 import { Button, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
@@ -186,91 +187,89 @@ export const SellItem = () => {
 
   return (
 
-      <div className="user-container">
-        {/*<img*/}
-        {/*    className="search-picture"*/}
-        {/*    src="src\pictures\usm-cover-photo.jpg"*/}
-        {/*    alt="USM Cover Photo"*/}
-        {/*    style={{*/}
-        {/*      width: "100%",*/}
-        {/*      height: "auto",*/}
-        {/*      objectFit: "cover",*/}
-        {/*    }}*/}
-        {/*/>*/}
-        {/*<img*/}
-        {/*  className="user-image mb-2"*/}
-        {/*  src={user?.photoURL || ""}*/}
-        {/*  alt="User profile"*/}
-        {/*/>*/}
-        {/*<p className="user-name mb-3">{user?.displayName}</p>*/}
-        <div className="listing_data mb-3">
-          <input
-            id="fileInput"
-            className="mb-4"
-            type="file"
-            onChange={handleFileInputChange}
-          />
-          <label htmlFor="fileInput">
-            { file === "" ? "Choose a file" : file.name}
-          </label>
-          <div className="mb-4">
-            <input
-              type={"text"}
-              className="input-title"
-              placeholder="Title"
-              onChange={handleItemTitleChange}
-              value={newItem.title}
-              required={true}
-            />
-            <p>{}</p>
-          </div>
-          <div className="mb-4">
-            <select
-              className="select"
-              onChange={handleItemTypeChange}
-            >
-              <option>Choose one</option>
-              <option value="Clothes">Clothes</option>
-              <option value="Item">Item</option>
-              <option value="Rental">Rental</option>
-            </select>
-          </div>
-          <div className="mb-4">
-            <input
-              type={"number"}
-              className="input-price"
-              placeholder="Price"
-              onChange={handlePriceChange}
-              value={newItem.price}
-              required={true}
-            />
-          </div>
-          <div className="mb-4">
-            <textarea
-              className="input-description"
-              placeholder="Description"
-              onChange={handleDescriptionChange}
-              value={newItem.description}
-            />
+    <div style={{justifyContent:"center",
+    alignItems:"center",
+    display:"flex",
+    background: `url('../../public/pictures/imgs/cool_pic.jpg') center/cover no-repeat `,
+    borderRadius:"20px",
+    
+  }}
+    >
+    <div className="listing_data m-5">
+      <input
+        id="fileInput"
+        className="mb-4 form-control file-input"
+        type="file"
+        onChange={handleFileInputChange}
+      />
+      <label htmlFor="fileInput" className="custom-button fill-button" style={{marginBottom: "20px",marginLeft: "30%"}} >
+        {file === "" ? "Válassz egy képet" : "Válassz másik képet"}
+      </label>
+      {file &&      
+      <img src={URL.createObjectURL(file)} alt="kiválasztott kép" style={{maxHeight:"250px",width:"250px",objectFit: "cover", margin: "20px", borderRadius:"20px",marginLeft: "22%"}}/>}
 
-          </div>
-          <button className={"hover-2"}
-                  disabled={newItem.title.length < 2 || newItem.price.length < 1 || newItem.itemType === "Choose one"}
-                  onClick={handleUpload}>
-            Upload
-          </button>
-          <Modal show={show} onHide={() => setShow(false)}>
-            <Modal.Header closeButton>
-              <Modal.Title>Upload complete!</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Your file has been uploaded successfully.</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShow(false)}>
-                Close
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
+      <div className="mb-4">
+        <label style={{marginBottom:"10px", fontWeight:"Bold", marginLeft:"5px"}}>Adj meg egy címet</label>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Cím"
+          onChange={handleItemTitleChange}
+          value={newItem.title}
+          required={true}
+        />
       </div>
-  );
-};
+      <div className="mb-4">
+      <label style={{marginBottom:"10px", fontWeight:"Bold", marginLeft:"5px"}}>Válassz egy típust</label>
+        <select
+          className="form-select"
+          onChange={handleItemTypeChange}
+        >
+          <option>Válassz egy típust</option>
+          <option value="Clothes">Ruha</option>
+          <option value="Item">Tárgy</option>
+          <option value="Rental">Kiadni</option>
+        </select>
+      </div>
+      <div className="mb-4">
+      <label style={{marginBottom:"10px", fontWeight:"Bold", marginLeft:"5px"}}>Határozz meg egy árat</label>
+        <input
+          type="number"
+          className="form-control"
+          placeholder="Ár"
+          onChange={handlePriceChange}
+          value={newItem.price}
+          required={true}
+        />
+      </div>
+      <div className="mb-4">
+      <label style={{marginBottom:"10px", fontWeight:"Bold", marginLeft:"5px"}}>Írj egy leírást</label>
+        <textarea
+          className="form-control"
+          placeholder="Leírás"
+          onChange={handleDescriptionChange}
+          value={newItem.description}
+        />
+      </div>
+      <button
+        className="custom-button fill-button"
+        style={{marginLeft: "40%"}}
+        disabled={newItem.title.length < 2 || newItem.price.length < 1 || newItem.itemType === "Choose one"}
+        onClick={handleUpload}
+      >
+        Upload
+      </button>
+      <Modal show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Upload complete!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Your file has been uploaded successfully.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  </div>
+)}  

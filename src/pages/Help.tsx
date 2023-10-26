@@ -1,52 +1,39 @@
 import React from "react";
 import { Row, Col } from "react-bootstrap";
 import "../formating/layout.css";
+import HelpCard from "../components/HelpCard";
 
 export const Help = () => {
-    return (
-        <div className="help-container d-flex justify-content-center align-items-center">
-            <div className="text-center">
-                <h1 className="help-heading">lépjen kapcsolatba velünk</h1>
-                <h5>Lépjen velünk kapcsolatba, és mondja el hogyan tudunk segíteni.</h5>
-                <Row lg={8} md={8} xs={8} style={{marginTop:"80px"}} className="square-container">
-                    <Col className="square">
-                        <div className="inner-square">
-                            <img
-                                src="https://cdn-icons-png.flaticon.com/512/2344/2344684.png"
-                                alt="Help"
-                                style={{
-                                    width: "80px",
-                                    height: "80px",
-                                }}
-                            />
-                        </div>
-                    </Col>
-                    <Col className="square">
-                        <div className="inner-square">
-                            <img
-                                src="../../public/pictures/question-mark.png"
-                                alt="Help"
-                                style={{
-                                    width: "80px",
-                                    height: "80px",
-                                }}
-                            />
-                        </div>
-                    </Col>
-                    <Col className="square">
-                        <div className="inner-square">
-                            <img
-                                src="../../public/pictures/support.png"
-                                alt="Help"
-                                style={{
-                                    width: "80px",
-                                    height: "80px",
-                                }}
-                            />
-                        </div>
-                    </Col>
-                </Row>
-            </div>
+  
+  const pageTitle = "Lépjen kapcsolatba velünk"
+  const pageDesc = "Lépjen velünk kapcsolatba, és mondja el hogyan tudunk segíteni."
+
+  return (
+    <div
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+        height: "700px",
+        display: "flex",
+        background: `url('../../public/pictures/imgs/cool_pic.jpg') center/cover no-repeat`,
+        borderRadius: "20px",
+      }}
+    >
+      <div className="text-center">
+        <div style={{ padding: "5%" }}>
+          <h1 className="help-heading" style={{ color: "white" }}>
+            {pageTitle}
+          </h1>
+          <h5 style={{ color: "white" }}>
+            {pageDesc}
+          </h5>
         </div>
-    );
+        <div style={{ display: "flex", paddingBottom: "15%" }} className="square-container">
+          <HelpCard image="../../public/pictures/question-mark.png" title="Segítség" desc="nem tudom"/>
+          <HelpCard image="../../public/pictures/question-mark.png" title="Segítség" desc="nem tudom"/>
+          <HelpCard image="../../public/pictures/support.png" title="Segítség" desc="nem tudom"/>
+        </div>
+      </div>
+    </div>
+  );
 };

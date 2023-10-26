@@ -22,6 +22,8 @@ export function AllListings({typeOfItem, maxItemToShow}: Props) {
 
     const [imageList, setImageList] = useState<string[]>([]);
 
+    const [refreshKey, setRefreshKey] = useState(0);
+
 
     const imageListRef = ref(storage, "images/");
     useEffect(() => {
@@ -35,6 +37,10 @@ export function AllListings({typeOfItem, maxItemToShow}: Props) {
             );
         });
     }, []);
+
+    const handleUnlikeItem = () => {
+        setRefreshKey((prevKey) => prevKey + 1); // Increment refreshKey
+    };
 
     //Elválasztás
 
@@ -80,7 +86,7 @@ export function AllListings({typeOfItem, maxItemToShow}: Props) {
                                     itemType: string
                                 }) => (
                                     <Col key={item.id}>
-                                        <StoreItem {...item} />
+                                        <StoreItem onLikeUpdate={handleUnlikeItem} {...item} />
                                     </Col>
                                 )
                             )}
