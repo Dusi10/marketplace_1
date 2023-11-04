@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../../config/firebase';
-import { addDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { addDoc, collection, query, where, getDocs, setDoc, doc } from 'firebase/firestore';
 
 const AddUser = () => {
   const userCollectionRef = collection(db, 'UsersData');
@@ -43,6 +43,7 @@ const AddUser = () => {
         };
 
         await addDoc(userCollectionRef, userData);
+        await setDoc(doc(db, "userChats", user.uid), {});
       }
     } catch (err) {
       console.error('Error adding user data:', err);
@@ -51,23 +52,15 @@ const AddUser = () => {
 
   return (
     <div>
-      {user ? (
         <>
           {userExists ? (
-            <p>User already exists in the list.</p>
+            <p></p>
           ) : (
             <button onClick={onSubmitData} style={{ color: 'black' }}>
               Add User Data
             </button>
           )}
-          <p>Email: {user.email}</p>
-          <p>UID: {user.uid}</p>
-          <p>Display Name: {user.displayName}</p>
-          <p>Photo URL: {user.photoURL}</p>
         </>
-      ) : (
-        <p>Please sign in to add user data.</p>
-      )}
     </div>
   );
 };

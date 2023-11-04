@@ -83,7 +83,8 @@ export function AllListings({typeOfItem, maxItemToShow}: Props) {
                                     id: number;
                                     images: string;
                                     description: string;
-                                    itemType: string
+                                    itemType: string,
+                                    seller: string,
                                 }) => (
                                     <Col key={item.id}>
                                         <StoreItem onLikeUpdate={handleUnlikeItem} {...item} />

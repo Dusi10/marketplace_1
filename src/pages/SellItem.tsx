@@ -21,7 +21,7 @@ export const SellItem = () => {
         itemType: "",
         price : "",
         title : "",
-        userId: ""
+        userId: "",
       }
   )
   //User auth for authentication purpoise
@@ -97,6 +97,7 @@ export const SellItem = () => {
   }, []);
 
   //When the button is pressed the values are set with the fields current value and uploades it to the firebase database and also the setShow is getting a truthy value case in case it gets a truthy value it shows up and after it we can close it, it's just a nice way to show that the upload is done
+  const seller = user?.displayName;
   const onSubmitData = async (formData: any) => {
     try {
       await addDoc(itemsCollectionRef, {
@@ -106,6 +107,7 @@ export const SellItem = () => {
         itemType: newItem.itemType,
         images: newFile,
         userId: auth?.currentUser?.uid, //needed for knowing which user is who
+        seller: seller,
       });
       setShow(true);
     } catch (err) {
@@ -261,12 +263,12 @@ export const SellItem = () => {
       </button>
       <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Upload complete!</Modal.Title>
+          <Modal.Title>Sikeres feltőltés!</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Your file has been uploaded successfully.</Modal.Body>
+        <Modal.Body>A hirdetésedet sikeresen létrehoztad.</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>
-            Close
+            Bezár
           </Button>
         </Modal.Footer>
       </Modal>

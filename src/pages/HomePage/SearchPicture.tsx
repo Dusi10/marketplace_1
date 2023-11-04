@@ -1,8 +1,10 @@
 import React from 'react'
+import { Container } from 'react-bootstrap'
 
 const SearchPicture = () => {
   return (
-    <div>        
+    <Container className="search mb-5">
+            <div>        
         <img
     src="src\pictures\usm-cover-photo.jpg"
     alt="USM Cover Photo"
@@ -21,6 +23,8 @@ const SearchPicture = () => {
     width={"80%"}
     className="search-field"
   /></div>
+  </Container>
+
   )
 }
 

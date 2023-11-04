@@ -5,7 +5,7 @@ import {
     Routes,
 } from "react-router-dom";
 import {Container} from "react-bootstrap";
-import {Home} from "./pages/HomePage/Home";
+import {Home} from "./pages/Home";
 import {Help} from "./pages/Help";
 import {User} from "./pages/User";
 import {Navbar} from "./components/Navbars/Navbar";
