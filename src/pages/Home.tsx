@@ -5,6 +5,8 @@ import "../formating/pictures.css";
 
 
 export function Home() {
+const text1 = "Cseréld le a ruhatárad, találj igazlmas ruhadarabokat."
+
   return (
     <div>
       <Container className="search mb-5 " >
@@ -19,7 +21,7 @@ export function Home() {
             borderRadius: "20px"
           }}
         />
-        <span className="texts message">Cseréld le a ruhatárad, találj igazlmas ruhadarabokat.</span>
+        <span className="texts message">{text1}</span>
           <input
             type="input"
             placeholder="Mit keresel?"

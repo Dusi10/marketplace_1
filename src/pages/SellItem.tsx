@@ -161,28 +161,44 @@ export const SellItem = () => {
   };
 
   function handleDescriptionChange(e:any) {
-    setNewItem({
-      ...newItem,
-      description: e.target.value
+    setNewItem((prevState)=> {
+      return { ...prevState, description: e.target.value }
     })
   }
   function handleItemTypeChange(e:any) {
-    setNewItem({
-      ...newItem,
-      itemType: e.target.value
+    setNewItem((prevState) =>{
+      return { ...newItem, itemType: e.target.value }
     })
   }
   function handlePriceChange(e:any) {
-    setNewItem({
-      ...newItem,
-      price: e.target.value
+    setNewItem((prevState) => {
+      return { ...newItem, price: e.target.value }
     })
   }
   function handleItemTitleChange(e:any) {
-    setNewItem({
-      ...newItem,
-      title: e.target.value
+    setNewItem((prevState) => {
+      return { ...prevState, title: e.target.value}
     })
+  }
+
+  const inputChangeHandler = (identifier:string, value:any) => {
+    if (identifier === "description") {
+      setNewItem((prevState) => {
+        return { ...prevState, description: value}
+      })
+    } else if (identifier === "itemType") {
+      setNewItem((prevState) => {
+        return { ...prevState, itemType: value}
+      })
+    } else if (identifier === "price") {
+      setNewItem((prevState) => {
+        return { ...prevState, price: value}
+      })
+    } else if (identifier === "title") {
+      setNewItem((prevState) => {
+        return { ...prevState, title: value}
+      })
+    }
   }
 
   return (
@@ -214,7 +230,7 @@ export const SellItem = () => {
           type="text"
           className="form-control"
           placeholder="Cím"
-          onChange={handleItemTitleChange}
+          onChange={(e) => inputChangeHandler("title", e.target.value)}
           value={newItem.title}
           required={true}
         />
@@ -223,7 +239,7 @@ export const SellItem = () => {
       <label style={{marginBottom:"10px", fontWeight:"Bold", marginLeft:"5px"}}>Válassz egy típust</label>
         <select
           className="form-select"
-          onChange={handleItemTypeChange}
+          onChange={(e) => inputChangeHandler("itemType", e.target.value)}
         >
           <option>Válassz egy típust</option>
           <option value="Clothes">Ruha</option>
@@ -237,7 +253,7 @@ export const SellItem = () => {
           type="number"
           className="form-control"
           placeholder="Ár"
-          onChange={handlePriceChange}
+          onChange={(e) => inputChangeHandler("price", e.target.value)}
           value={newItem.price}
           required={true}
         />
@@ -247,7 +263,7 @@ export const SellItem = () => {
         <textarea
           className="form-control"
           placeholder="Leírás"
-          onChange={handleDescriptionChange}
+          onChange={(e) => inputChangeHandler("description", e.target.value)}
           value={newItem.description}
         />
       </div>
