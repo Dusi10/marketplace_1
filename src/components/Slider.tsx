@@ -4,6 +4,8 @@ import { AllListings } from './AllListings'; // replace with your own component 
 const items = [ // replace with your own array of items to display
   { id: 1, typeOfItem: 'Clothes'},
   { id: 2, typeOfItem: 'Item' },
+  { id: 3, typeOfItem: 'Food' },
+  { id: 4, typeOfItem: 'Book' },
 ];
 
 function ItemCarousel() {

@@ -70,8 +70,8 @@ export function Listings() {
     };
 
     return (
-        <>
-            <h1>Your Listings</h1>
+        <div className="listingBackground">
+            <h1>Hirdetéseim</h1>
             <div>
                 <Row md={2} xs={1} lg={4} className={"g-3"}>
                     {itemList.map(
@@ -83,7 +83,7 @@ export function Listings() {
                             itemType: string;
                         }) => (
                             <Col key={item.id}>
-                                <StoreItem onLikeUpdate={()=>{}} {...item} />
+                                <StoreItem onLikeUpdate={() => { } } {...item} />
 
                                 {isEditing && editItemId === item.id ? (
                                     <div style={{display: 'grid', marginTop: "10px"}}>
@@ -118,6 +118,6 @@ export function Listings() {
                     )}
                 </Row>
             </div>
-        </>
+        </div>
     );
 }

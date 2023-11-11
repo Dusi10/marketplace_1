@@ -1,9 +1,9 @@
-import { AllListings } from "../components/AllListings";
+import { AllListings } from "../../components/AllListings";
 
 export function Clothes() {
-  const title = "Clothes"
+  const title = "Ruhák"
   return (
-    <div>
+    <div className="listingBackground">
       <h1>{title}</h1>
       <AllListings typeOfItem="Clothes" maxItemToShow={100}/>
     </div>

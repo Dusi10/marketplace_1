@@ -4,7 +4,7 @@ import "../formating/user.css";
 import "../formating/format.css"
 import picture from "../../public/pictures/imgs/cool_pic.jpg"
 import { Button, Modal } from "react-bootstrap";
-import { useState, useEffect } from "react";
+import { useState, useEffect , useRef} from "react";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { itemSchema } from "../components/ItemValidation";
@@ -21,7 +21,7 @@ export const SellItem = () => {
         itemType: "",
         price : "",
         title : "",
-        userId: ""
+        userId: "",
       }
   )
   //User auth for authentication purpoise
@@ -39,6 +39,15 @@ export const SellItem = () => {
 
   const [file, setFile] = useState<any>("");
   const [newFile, setNewFile] = useState<string>("");
+
+  const resetSelect = () => {
+    setNewItem((prevItem) => {
+      return {
+        ...prevItem,
+        itemType: "Válassz egy típust"
+      };
+    });
+  };
 
   // Image useeffect, this one gives a new name for the file case if there are multiple files with the same name it will refresh the picture to the newest one so I added a date and time which refreshes before the files name so there wont be two same file names.
   //I also keep track of the files uploading state so later on I can make adjustmants to disable the submit button in case the file hasnt been uploaded yet
@@ -97,6 +106,7 @@ export const SellItem = () => {
   }, []);
 
   //When the button is pressed the values are set with the fields current value and uploades it to the firebase database and also the setShow is getting a truthy value case in case it gets a truthy value it shows up and after it we can close it, it's just a nice way to show that the upload is done
+  const seller = user?.displayName;
   const onSubmitData = async (formData: any) => {
     try {
       await addDoc(itemsCollectionRef, {
@@ -106,6 +116,7 @@ export const SellItem = () => {
         itemType: newItem.itemType,
         images: newFile,
         userId: auth?.currentUser?.uid, //needed for knowing which user is who
+        seller: seller,
       });
       setShow(true);
     } catch (err) {
@@ -154,6 +165,7 @@ export const SellItem = () => {
       setShow(true);
       resetFields();
       setFile("")
+      resetSelect()
     } catch (validationErrors) {
       // Handle validation errors, if any
       console.error(validationErrors);
@@ -206,7 +218,7 @@ export const SellItem = () => {
     <div style={{justifyContent:"center",
     alignItems:"center",
     display:"flex",
-    background: `url('../../public/pictures/imgs/cool_pic.jpg') center/cover no-repeat `,
+    backgroundColor: "#29465B",
     borderRadius:"20px",
     
   }}
@@ -241,10 +253,12 @@ export const SellItem = () => {
           className="form-select"
           onChange={(e) => inputChangeHandler("itemType", e.target.value)}
         >
-          <option>Válassz egy típust</option>
+          <option value="Choose one">Válassz egy típust</option>
           <option value="Clothes">Ruha</option>
           <option value="Item">Tárgy</option>
-          <option value="Rental">Kiadni</option>
+          <option value="Food">Étel</option>
+          <option value="Book">Könyv</option>
+          <option value="Other">Egyéb</option>
         </select>
       </div>
       <div className="mb-4">
@@ -270,19 +284,24 @@ export const SellItem = () => {
       <button
         className="custom-button fill-button"
         style={{marginLeft: "40%"}}
-        disabled={newItem.title.length < 2 || newItem.price.length < 1 || newItem.itemType === "Choose one"}
+        disabled={
+          newItem.title.length < 2 ||
+          newItem.price.length < 1 ||
+          !newFile ||  // Check if newFile (image URL) is empty
+          newItem.itemType === "Válassz egy típust"
+        }
         onClick={handleUpload}
       >
-        Upload
+        Létrehozás
       </button>
       <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Upload complete!</Modal.Title>
+          <Modal.Title>Sikeres feltőltés!</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Your file has been uploaded successfully.</Modal.Body>
+        <Modal.Body>A hirdetésedet sikeresen létrehoztad.</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>
-            Close
+            Bezár
           </Button>
         </Modal.Footer>
       </Modal>

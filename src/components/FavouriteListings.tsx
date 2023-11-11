@@ -73,7 +73,7 @@ export function FavouriteListings() {
 
 
     return (
-        <div>
+        <div className="listingBackground">
             <div>
                 {isLoading ? (
                     <div>Loading...</div>

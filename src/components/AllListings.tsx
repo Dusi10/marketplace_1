@@ -69,12 +69,12 @@ export function AllListings({typeOfItem, maxItemToShow}: Props) {
 
 
     return (
-        <div>
+        <div className="listingBackground">
             <div>
                 {isLoading ? (
                     <div>Loading...</div>
                 ) : (itemList.length < 1
-                        ? `Jelenleg nincsen ${typeOfItem} hirdetés`
+                        ? `Jelenleg nincsen hirdetés`
                         : <Row md={2} xs={1} lg={4} className={"g-3"}>
                             {itemList.map(
                                 (item: {
@@ -83,10 +83,12 @@ export function AllListings({typeOfItem, maxItemToShow}: Props) {
                                     id: number;
                                     images: string;
                                     description: string;
-                                    itemType: string
+                                    itemType: string,
+                                    seller: string,
+                                    userId: string
                                 }) => (
                                     <Col key={item.id}>
-                                        <StoreItem onLikeUpdate={handleUnlikeItem} {...item} />
+                                        <StoreItem sellerId={item.userId} onLikeUpdate={handleUnlikeItem} {...item} />
                                     </Col>
                                 )
                             )}

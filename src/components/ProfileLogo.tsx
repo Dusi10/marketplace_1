@@ -1,14 +1,18 @@
-import React, {useState, useRef, useEffect} from "react";
-import {Button, Container, Nav, Navbar as NavbarBs} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { Button, Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "../formating/format.css"
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../config/firebase";
 
 interface Logo {
     profilePicture: string;
     logOutLogic: VoidFunction
 }
 
-export function ProfileLogo({profilePicture, logOutLogic}: Logo) {
+export function ProfileLogo({ profilePicture, logOutLogic }: Logo) {
+    const [user] = useAuthState(auth);
+
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +41,7 @@ export function ProfileLogo({profilePicture, logOutLogic}: Logo) {
     };
 
     return (
-        <div>
+        <div >
             <img
                 src={profilePicture || ""}
                 alt="User profile"
@@ -66,26 +70,28 @@ export function ProfileLogo({profilePicture, logOutLogic}: Logo) {
                     className={"dropdown-content"}
                 >
                     {/* Dropdown content goes here */}
-                    <ul style={{marginRight: "10px", marginTop: "7px"}}>
-                        <li>
-                            <Link className={"default-link"} to={"/User"}>Felhasználó</Link>
-                        </li>
-                        <li>
+                    <ul style={{ marginRight: "5px", marginTop: "5px" }}>
+                        <p style={{ margin: "1px" }}>
+                            <Link className={"default-link"} to={`/SellerProfile/${user?.uid}`}>Profil</Link>
+                        </p>
+                        <p style={{ margin: "2px" }}>
                             <Link className={"default-link"} to={"/Listings"}>Hirdetéseid</Link>
-                        </li>
-                        <li>
+                        </p>
+                        {/* <p style={{margin: "2px"}}>
                             <Link className={"default-link"} to={"/Help"}>Segítség</Link>
-                        </li>
-                        <li>
+                        </p> */}
+                        <p style={{ margin: "2px" }}>
                             <Link className={"default-link"} to={"/Sellitem"}>Tárgy Eladás</Link>
-                        </li>
-                        <li>
+                        </p>
+                        <p style={{ margin: "2px" }}>
                             <Link className={"default-link"} to={"/Favourites"}>Kedvencek</Link>
-                        </li>
-                        <p>Üzenetek</p>
-                        <li>
-                            <p className={"hover-2"} onClick={logOutLogic}>Kijelentkezés</p>
-                        </li>
+                        </p>
+                        <p style={{ paddingBottom: "10px", margin: "2px" }}>
+                            <Link className={"default-link"} to={"/ChatPage"}>Üzenetek</Link>
+                        </p>
+
+                        <p className={"custom-button fill-button"} style={{ color: "red", display: "flex", justifyContent: "center", }} onClick={logOutLogic}>Kijelentkezés</p>
+
                     </ul>
                 </div>
             )}

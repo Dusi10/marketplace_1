@@ -27,6 +27,8 @@ export function SelectListings() {
   // Filter state
   const [filterOption, setFilterOption] = useState("All");
 
+  const filterText = "Típus szerinti keresés:"
+
   useEffect(() => {
     setIsLoading(true);
     listAll(imageListRef)
@@ -66,19 +68,26 @@ export function SelectListings() {
   }, [filterOption]);
 
   return (
-    <div>
-      <div>
-        <>Search for a type: </>
-        <select
-          value={filterOption}
-          onChange={(e) => setFilterOption(e.target.value)}
-          className="mb-4"
-        >
-          <option value="All">All</option>
-          <option value="Clothes">Clothes</option>
-          <option value="Item">Item</option>
-          <option value="Rental">Rental</option>
-        </select>
+    <div 
+    className="listingBackground"
+    >
+      <div >
+        <div style={{display:"flex"}}>
+          <p style={{paddingInline: "10px"}}>
+            {filterText}
+          </p>
+          <select
+            value={filterOption}
+            onChange={(e) => setFilterOption(e.target.value)}
+            className="mb-4"
+          >
+            <option value="All">Minden</option>
+            <option value="Clothes">Ruhák</option>
+            <option value="Food">Ételek</option>
+            <option value="Item">Tárgyak</option>
+            <option value="Book">Könyvek</option>
+          </select>
+        </div>
       </div>
       {isLoading ? (
         <div>Loading...</div>
@@ -86,7 +95,7 @@ export function SelectListings() {
         <Row md={2} xs={1} lg={4} className={"g-3"}>
           {itemList.map((item: any) => (
             <Col key={item.id}>
-              <StoreItem {...item} />
+              <StoreItem sellerId={item.userId} {...item} />
             </Col>
           ))}
         </Row>

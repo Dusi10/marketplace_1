@@ -1,9 +1,9 @@
-import {Container, Nav, Navbar as NavbarBs} from "react-bootstrap";
-import {NavLink} from "react-router-dom";
-import {Login} from "../login";
-import {useAuthState} from "react-firebase-hooks/auth";
-import {auth} from "../../config/firebase";
-import {navLinkStyle} from "./FastNavbar";
+import { Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
+import { Login } from "../login";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../config/firebase";
+import { navLinkStyle } from "./FastNavbar";
 
 //Top navbar
 export const Navbar = () => {
@@ -15,14 +15,19 @@ export const Navbar = () => {
                     <NavLink style={navLinkStyle} className={"reverseLined"} to="/">
                         Kezdőlap
                     </NavLink>
-                    <NavLink style={navLinkStyle} className={"reverseLined"} to="/Help">
+                    {/* <NavLink style={navLinkStyle} className={"reverseLined"} to="/Help">
                         Segítség
-                    </NavLink>
+                    </NavLink> */}
                     {user && <NavLink style={navLinkStyle} className={"reverseLined"} to="/ChatPage">
                         Beszélgetések
-                    </NavLink>}
+                    </NavLink>
+                    }
+                    {user && <NavLink style={navLinkStyle} className={"reverseLined"} to={`/SellerProfile/${user?.uid}`}>
+                        Profil
+                    </NavLink>
+                    }
                 </Nav>
-                <Login/>
+                <Login />
             </Container>
         </NavbarBs>
     );

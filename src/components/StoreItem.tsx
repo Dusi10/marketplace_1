@@ -4,6 +4,7 @@ import { formatCurrency } from "../utilities/formatCurrency";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../config/firebase";
 import { addDoc, collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export interface ItemProps {
   id: string | number,
@@ -12,13 +13,17 @@ export interface ItemProps {
   price: number,
   images: string,
   itemType: string,
-  onLikeUpdate: VoidFunction
+  onLikeUpdate: VoidFunction,
+  seller: string,
+  sellerId: string,
 }
 
-export const StoreItem = ({ id, title, price, images, description, itemType, onLikeUpdate }: ItemProps) => {
+export const StoreItem = ({ id, title, price, images, description, itemType, onLikeUpdate, seller, sellerId }: ItemProps) => {
   const [hovered, setHovered] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [user] = useAuthState(auth);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkLikeStatus = async () => {
@@ -74,8 +79,7 @@ export const StoreItem = ({ id, title, price, images, description, itemType, onL
   };
 
   const sendMessage = () => {
-    console.log("sendMessage function called");
-    alert("Message sent");
+    navigate(`/SellerProfile/${sellerId}`); // Navigate to the seller's profile with their ID
   };
 
   return (
@@ -86,15 +90,24 @@ export const StoreItem = ({ id, title, price, images, description, itemType, onL
           <h1 className="heading-text">{title}</h1>
           <h2 className="paragraph-text">{formatCurrency(price)}</h2>
         </div>
-        <div className="button-wrapper">
-          <div className={"custom-button fill-button"} onClick={likeItem}>
-            {isLiked ? "Nem Tetszik" : "Tetszik"}
+        <div style={{ display: "grid", justifyContent: "center", alignContent: "center", marginBottom: "15px" }}>
+          <div style={{
+            display: "flex",
+            flexFlow: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            <div className="custom-button fill-button" style={{ marginBottom: "10px", maxWidth: "260px" }} onClick={likeItem}>
+              {isLiked ? "Nem Tetszik" : "Tetszik"}
+            </div>
+            {seller && (
+              <button className="custom-button fill-button" onClick={sendMessage}>
+                Eladó: {seller}
+              </button>
+            )}
           </div>
-          <button className="custom-button fill-button" onClick={sendMessage}>
-            Küldj Üzenetet
-          </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+      );
 };

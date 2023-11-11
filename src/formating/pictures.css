@@ -36,10 +36,7 @@
   align-items: center;
 }
 .search-picture {
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
+  border-radius: 10px;
 }
 .search-field {
   margin-top: 55px;
@@ -120,8 +117,5 @@
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
-
-  width: 600px;
-  border: 1px solid black;
 }
 

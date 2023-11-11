@@ -9,3 +9,12 @@
     width: 100%;
     height: 2.5rem;
 }
+
+.listingBackground {
+    background-color: white;
+    padding-inline: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 10px
+}
+

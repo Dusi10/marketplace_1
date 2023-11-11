@@ -16,16 +16,19 @@ export const FastNavbar = () => {
       <Container>
         <Nav className="me-auto">
         <NavLink className={"reverseLined"} style={navLinkStyle} to="/all" >
-            Minden fajta
+            Minden
           </NavLink>
           <NavLink className={"reverseLined"} style={navLinkStyle} to="/clothes" >
             Ruházat
+          </NavLink>
+          <NavLink className={"reverseLined"} style={navLinkStyle} to="/Food" >
+            Ételek
           </NavLink>
           <NavLink className={"reverseLined"} style={navLinkStyle} to="/items">
             Tárgyak
           </NavLink>
           <NavLink className={"reverseLined"} style={navLinkStyle} to="/rent">
-            Bérelhető eszközök
+            Könyvek
           </NavLink>
           {user && (<NavLink style={navLinkStyle} className={"reverseLined"} to="/Listings">
                         Hirdetéseim
