@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import {auth, db} from "../config/firebase";
 import {collection, getDocs, deleteDoc, doc, query, where, updateDoc} from "firebase/firestore";
-import {Col, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import {StoreItem} from "../components/StoreItem";
 import {useAuthState} from "react-firebase-hooks/auth";
 import "../formating/format.css"
@@ -71,6 +71,7 @@ export function Listings() {
 
     return (
         <div className="listingBackground">
+            <Container className="mb-4">
             <h1>Hirdetéseim</h1>
             <div>
                 <Row md={2} xs={1} lg={4} className={"g-3"}>
@@ -118,6 +119,7 @@ export function Listings() {
                     )}
                 </Row>
             </div>
+            </Container>
         </div>
     );
 }

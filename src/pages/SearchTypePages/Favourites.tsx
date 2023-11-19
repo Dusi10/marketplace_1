@@ -4,8 +4,7 @@ export function Favourites() {
     const title = "Kedvencek"
     return (
         <div className="listingBackground">
-            <h1>{title}</h1>
-            <FavouriteListings/>
+            <FavouriteListings title={title}/>
         </div>
     );
 }

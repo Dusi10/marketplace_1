@@ -5,7 +5,7 @@ import "../formating/format.css";
 import "../formating/pictures.css";
 import {db} from "../config/firebase";
 import {collection, getDocs} from "firebase/firestore";
-import {Col, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import {StoreItem} from "./StoreItem";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -15,7 +15,7 @@ interface Props {
     maxItemToShow: number,
 }
 
-export function FavouriteListings() {
+export function FavouriteListings({title}) {
     const [user] = useAuthState(auth);
     
     const [itemList, setItemList] = useState<any>([]);
@@ -74,6 +74,8 @@ export function FavouriteListings() {
 
     return (
         <div className="listingBackground">
+            <Container className="mb-4">
+            <h1>{title}</h1>
             <div>
                 {isLoading ? (
                     <div>Loading...</div>
@@ -96,6 +98,7 @@ export function FavouriteListings() {
                         </Row>
                 )}
             </div>
+            </Container>
         </div>
     );
 }

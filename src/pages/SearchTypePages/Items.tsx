@@ -4,8 +4,7 @@ export function Items() {
     const title= "Tárgyak"
     return (
         <div className="listingBackground">
-            <h1>{title} </h1>
-            <AllListings typeOfItem="Item" maxItemToShow={100}/>
+            <AllListings typeOfItem="Item" maxItemToShow={100} title={title}/>
         </div>
     );
 }

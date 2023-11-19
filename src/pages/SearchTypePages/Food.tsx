@@ -5,8 +5,7 @@ const Food = () => {
     const title = "Ételek"
     return (
         <div className="listingBackground">
-            <h1>{title}</h1>
-            <AllListings typeOfItem="Food" maxItemToShow={100}/>
+            <AllListings typeOfItem="Food" maxItemToShow={100} title={title}/>
         </div>
     );
 }

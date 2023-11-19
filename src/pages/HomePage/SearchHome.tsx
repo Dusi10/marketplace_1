@@ -1,34 +1,28 @@
-import React from 'react'
-import { Button, Container } from 'react-bootstrap'
+// SearchHome.js
+
+import React from 'react';
 
 const SearchHome = () => {
+  const text1 = "Cseréld le a ruhatárad, találj igazlmas ruhadarabokat.";
+
   return (
-    <div>
-        <Container className="search mb-5 " >
-        <img
-          src="src\pictures\usm-cover-photo.jpg"
-          alt="USM Cover Photo"
-          style={{
-            width: "100%",
-            height: "auto",
-            objectFit: "cover",
-            maxHeight: "370px",
-            borderRadius: "20px"
-          }}
-        />
-        <span className="texts message">Cseréld le a ruhatárad, találj igazlmas ruhadarabokat.</span>
-          <input
-            type="input"
-            placeholder="Mit keresel?"
-            width={"80%"}
-            className="search-field"
-          />
-          <Button className="input-submit rounded-circle " variant="outline-primary"  type="submit">➜</Button>
-          <span className="input-submit-search">🔍</span>
-
-      </Container>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: '20px' }}>
+      <img
+        src="src\pictures\usm-cover-photo.jpg"
+        alt="USM Cover Photo"
+        style={{
+          width: '100%',
+          height: 'auto',
+          objectFit: 'cover',
+          maxHeight: '450px',
+        }}
+      />
+      <span className="texts message" style={{ display: "block", textAlign: "center", marginTop: '5%' }}>
+        {text1}
+      </span>
+      
     </div>
-  )
-}
+  );
+};
 
-export default SearchHome
+export default SearchHome;

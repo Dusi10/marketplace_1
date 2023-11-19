@@ -4,7 +4,7 @@ import { ref, listAll, getDownloadURL } from "firebase/storage";
 import "../formating/format.css";
 import { db } from "../config/firebase";
 import { collection, getDocs } from "firebase/firestore";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { StoreItem } from "./StoreItem";
 
 interface Item {
@@ -27,7 +27,7 @@ export function SelectListings() {
   // Filter state
   const [filterOption, setFilterOption] = useState("All");
 
-  const filterText = "Típus szerinti keresés:"
+  const filterText = "Típus szerinti keresés:";
 
   useEffect(() => {
     setIsLoading(true);
@@ -62,44 +62,41 @@ export function SelectListings() {
     }
   };
 
-
   useEffect(() => {
     getItemList();
   }, [filterOption]);
 
   return (
-    <div 
-    className="listingBackground"
-    >
-      <div >
-        <div style={{display:"flex"}}>
-          <p style={{paddingInline: "10px"}}>
-            {filterText}
-          </p>
-          <select
-            value={filterOption}
-            onChange={(e) => setFilterOption(e.target.value)}
-            className="mb-4"
-          >
-            <option value="All">Minden</option>
-            <option value="Clothes">Ruhák</option>
-            <option value="Food">Ételek</option>
-            <option value="Item">Tárgyak</option>
-            <option value="Book">Könyvek</option>
-          </select>
+    <div className="listingBackground">
+      <Container className="mb-4">
+        <div>
+          <div style={{ display: "flex" }}>
+            <p style={{ paddingInline: "10px" }}>{filterText}</p>
+            <select
+              value={filterOption}
+              onChange={(e) => setFilterOption(e.target.value)}
+              className="mb-4"
+            >
+              <option value="All">Minden</option>
+              <option value="Clothes">Ruhák</option>
+              <option value="Food">Ételek</option>
+              <option value="Item">Tárgyak</option>
+              <option value="Book">Könyvek</option>
+            </select>
+          </div>
         </div>
-      </div>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <Row md={2} xs={1} lg={4} className={"g-3"}>
-          {itemList.map((item: any) => (
-            <Col key={item.id}>
-              <StoreItem sellerId={item.userId} {...item} />
-            </Col>
-          ))}
-        </Row>
-      )}
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <Row md={2} xs={1} lg={4} className={"g-3"}>
+            {itemList.map((item: any) => (
+              <Col key={item.id}>
+                <StoreItem sellerId={item.userId} {...item} />
+              </Col>
+            ))}
+          </Row>
+        )}
+      </Container>
     </div>
   );
 }

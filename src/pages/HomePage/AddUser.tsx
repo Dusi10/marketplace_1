@@ -29,12 +29,14 @@ const AddUser = ({modalIsOpen,  modalTitle, modalText, buttonAccept, buttonCance
   useEffect(() => {
     const checkUserExistence = async () => {
       if (user) {
-        const q = query(userCollectionRef, where('uid', '==', uid));
+        const q = query(userCollectionRef, where('username', '==', name));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.size > 0) {
           // User already exists in the collection
           setUserExists(true);
+        } else {
+          setUserExists(false);
         }
       }
     };

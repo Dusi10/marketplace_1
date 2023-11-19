@@ -10,15 +10,13 @@ const items = [ // replace with your own array of items to display
 
 function ItemCarousel() {
     const maxItemsToShow = 4
+    const title = "Nézz körbe friss hirdetéseink között"
   return (
     <Container>
-        <div>
-            <h3>Nézz körbe friss hirdetéseink között</h3>
-        </div>
       <Carousel >
           {items.slice(0, 4).map((item) => (
               <Carousel.Item key={item.id}>
-                  <AllListings typeOfItem={item.typeOfItem}  maxItemToShow={4}/>
+                  <AllListings typeOfItem={item.typeOfItem} maxItemToShow={4} title={title}/>
               </Carousel.Item>
           ))}
       </Carousel>

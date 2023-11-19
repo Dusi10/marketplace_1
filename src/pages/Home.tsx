@@ -6,10 +6,10 @@ import AddUser from "./HomePage/AddUser";
 
 
 export function Home() {
-const text1 = "Cseréld le a ruhatárad, találj igazlmas ruhadarabokat."
+
 
   return (
-    <div className="listingBackground">
+    <div >
       <SearchHome/>
       <Slider/>
     </div>
