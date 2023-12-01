@@ -192,8 +192,8 @@ const Profile = () => {
             <p>Negatív értékelések száma: {negativRating} </p>
             <p>Hirdetések száma: {itemNumber} </p>
           </div>
-          <h2 style={{margin: "20px", color: positivRating >= negativRating ? "green" : "red"}}>
-            {positivRating >= negativRating ? "Megbízható eladó" : "Nem megbízható eladó"}
+          <h2 style={{margin: "20px", color: positivRating > negativRating ? "green" : positivRating == negativRating ? "gray" : "red"}}>
+            {positivRating > negativRating ? "Megbízható eladó" : positivRating == negativRating ? "Nem értékelt eladó" : "Nem megbízható eladó" }
             </h2>
         </div>
         
