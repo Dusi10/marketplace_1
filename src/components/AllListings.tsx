@@ -14,7 +14,7 @@ interface Props {
   title: string;
 }
 
-export function AllListings({ typeOfItem, maxItemToShow, title }: Props) {
+export function AllListings({ typeOfItem, maxItemToShow }: Props) {
   const [itemList, setItemList] = useState<any>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -70,7 +70,6 @@ export function AllListings({ typeOfItem, maxItemToShow, title }: Props) {
   return (
     <div className="listingBackground">
       <Container className="mb-4">
-        <h1>{title}</h1>
         <div>
           {isLoading ? (
             <div>Loading...</div>

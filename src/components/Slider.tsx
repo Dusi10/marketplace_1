@@ -13,10 +13,11 @@ function ItemCarousel() {
     const title = "Nézz körbe friss hirdetéseink között"
   return (
     <Container>
+      <h2 style={{padding:"20px"}}>{title}</h2>
       <Carousel >
           {items.slice(0, 4).map((item) => (
               <Carousel.Item key={item.id}>
-                  <AllListings typeOfItem={item.typeOfItem} maxItemToShow={4} title={title}/>
+                  <AllListings typeOfItem={item.typeOfItem} maxItemToShow={4}/>
               </Carousel.Item>
           ))}
       </Carousel>
