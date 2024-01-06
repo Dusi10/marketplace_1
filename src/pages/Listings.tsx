@@ -84,7 +84,7 @@ export function Listings() {
                             itemType: string;
                         }) => (
                             <Col key={item.id}>
-                                <StoreItem onLikeUpdate={() => { } } {...item} />
+                                <StoreItem seller={""} sellerId={""} onLikeUpdate={() => { } } {...item} />
 
                                 {isEditing && editItemId === item.id ? (
                                     <div style={{display: 'grid', marginTop: "10px"}}>

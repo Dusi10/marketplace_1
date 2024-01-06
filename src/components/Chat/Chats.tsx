@@ -7,36 +7,45 @@ import { ChatContext } from "../../context/ChatContext";
 const Chats = () => {
 
   const [user] = useAuthState(auth);
-  const {dispatch}:any = useContext(ChatContext);
+  const { dispatch }: any = useContext(ChatContext);
 
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState<any[]>([]);
+
+  const handleSelect = (u: any) => {
+    dispatch({ type: "CHANGE_USER", payload: u });
+  };
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "userChats", user?.uid || ""), (doc) => {
-      setChats(doc.data());
+      setChats(doc.data() as any[] || []);
     });
 
-    return () =>{
-        unsub()
-    }
+    return () => {
+      unsub();
+    };
   }, [user?.uid]);
 
-  const handleSelect = (u) => {
-    dispatch({type: "CHANGE_USER", payload: u})
-  }
-
-  console.log(Object.entries(chats))
+  console.log(Object.entries(chats));
   return (
     <div className={"chats"}>
-        {Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => (
-
-      <div className={"userChat"} key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
-        <img className={"profileImg"} src={chat[1].userInfo.photoURL || ""} alt={""} />
-        <div className={"userChatInfo"}>
-          <span className={"chatSpan"}>{chat[1].userInfo.displayName}</span>
-          <p className={"chatP"}>{chat[1].lastMessage?.text}</p>
-        </div>
-      </div>
+      {Object.entries(chats)
+        ?.sort((a, b) => b[1].date - a[1].date)
+        .map((chat) => (
+          <div
+            className={"userChat"}
+            key={chat[0]}
+            onClick={() => handleSelect(chat[1].userInfo)}
+          >
+            <img
+              className={"profileImg"}
+              src={chat[1].userInfo.photoURL || ""}
+              alt={""}
+            />
+            <div className={"userChatInfo"}>
+              <span className={"chatSpan"}>{chat[1].userInfo.displayName}</span>
+              <p className={"chatP"}>{chat[1].lastMessage?.text}</p>
+            </div>
+          </div>
         ))}
     </div>
   );

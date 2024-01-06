@@ -89,7 +89,7 @@ export function ProfileLogo({ profilePicture, logOutLogic }: Logo) {
                         </p> */}
             <p style={{ margin: "2px" }}>
               <Link className={"reverseLined"} to={"/Sellitem"}>
-                Tárgy Eladás
+                Eladás
               </Link>
             </p>
             <p style={{ margin: "2px" }}>

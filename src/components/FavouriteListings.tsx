@@ -15,7 +15,7 @@ interface Props {
     maxItemToShow: number,
 }
 
-export function FavouriteListings({title}) {
+export function FavouriteListings({title}:any) {
     const [user] = useAuthState(auth);
     
     const [itemList, setItemList] = useState<any>([]);
@@ -91,7 +91,7 @@ export function FavouriteListings({title}) {
                                     
                                 }) => (
                                     <Col key={item.id}>
-                                        <StoreItem onLikeUpdate={handleUnlikeItem} itemType={""} {...item} />
+                                        <StoreItem seller={""} sellerId={""} onLikeUpdate={handleUnlikeItem} itemType={""} {...item} />
                                     </Col>
                                 )
                             )}

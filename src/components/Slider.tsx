@@ -17,7 +17,7 @@ function ItemCarousel() {
       <Carousel >
           {items.slice(0, 4).map((item) => (
               <Carousel.Item key={item.id}>
-                  <AllListings typeOfItem={item.typeOfItem} maxItemToShow={4}/>
+                  <AllListings typeOfItem={item.typeOfItem} maxItemToShow={4} title={''}/>
               </Carousel.Item>
           ))}
       </Carousel>
