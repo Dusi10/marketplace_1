@@ -9,7 +9,7 @@ const SearchHome = () => {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingBottom: '20px' }}>
       <img
         src="src\pictures\usm-cover-photo.jpg"
-        alt="USM Cover Photo"
+        alt="Marketplace Photo"
         style={{
           width: '100%',
           height: 'auto',
