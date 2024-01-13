@@ -6,7 +6,7 @@ const SearchPicture = () => {
     <Container className="search mb-5">
             <div>        
         <img
-    src="src\pictures\usm-cover-photo.jpg"
+    src="https://firebasestorage.googleapis.com/v0/b/szakdoga-25f1b.appspot.com/o/1705181358532usm-cover-photo.jpg?alt=media&token=ecb7c575-228b-40f0-8e58-123355e94200"
     alt="USM Cover Photo"
     style={{
       width: "100%",
